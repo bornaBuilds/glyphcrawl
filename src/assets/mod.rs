@@ -3,7 +3,11 @@
 
 use std::path::{Path, PathBuf};
 
+use std::collections::BTreeMap;
+
 use crate::game::level::RoomTemplate;
+use crate::render::ascii_shader::ShaderParams;
+use crate::render::figure::{Figure, FigureFile};
 use crate::render::material::{GlyphDim, MaterialLib};
 use crate::render::stamp::StampLib;
 use crate::render::world::{Tileset, TilesetDef, WorldArt};
@@ -16,6 +20,8 @@ pub struct Assets {
     pub tileset: Tileset,
     pub dim: GlyphDim,
     pub rooms: Vec<RoomTemplate>,
+    pub figures: BTreeMap<String, Figure>,
+    pub shader: ShaderParams,
     pub title: String,
 }
 
@@ -67,9 +73,17 @@ impl Assets {
             let t = RoomTemplate::parse(&name, &text).map_err(|e| anyhow::anyhow!("rooms/{name}.room: {e}"))?;
             rooms.push(t);
         }
+        let mut figures = BTreeMap::new();
+        for (name, path) in list(dir, "figures", "ron")? {
+            let text = std::fs::read_to_string(&path)?;
+            let file: FigureFile = parse_ron(&text).map_err(|e| anyhow::anyhow!("figures/{name}.ron: {e}"))?;
+            let fig = Figure::from_file(&name, file, |m| mats.id(m)).map_err(|e| anyhow::anyhow!("figures/{name}.ron: {e}"))?;
+            figures.insert(name, fig);
+        }
+        let shader: ShaderParams = parse_ron(&read(dir, "shader.ron")?).map_err(|e| anyhow::anyhow!("shader.ron: {e}"))?;
         let title = read(dir, "title.txt").unwrap_or_else(|_| "GLYPHCRAWL".into());
 
-        Ok(Assets { font, mats, stamps, tileset, dim, rooms, title })
+        Ok(Assets { font, mats, stamps, tileset, dim, rooms, figures, shader, title })
     }
 
     pub fn world_art(&self) -> WorldArt<'_> {

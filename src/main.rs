@@ -58,6 +58,9 @@ struct Cli {
     /// Window font size in pixels.
     #[arg(long, default_value_t = 14.0)]
     font_px: f32,
+    /// Gallery: start on this figure or stamp.
+    #[arg(long)]
+    focus: Option<String>,
     /// Don't stop at the minimum terminal size.
     #[arg(long)]
     allow_small: bool,
@@ -67,6 +70,10 @@ fn first_screen(name: &str, ctx: &mut Ctx) -> anyhow::Result<Box<dyn Screen>> {
     let seed = ctx.opts.seed.unwrap_or(1);
     let s: Box<dyn Screen> = match name {
         "sandbox" => Box::new(app::screens::sandbox::Sandbox::new()),
+        "gallery" => {
+            let focus = ctx.opts.focus.clone();
+            Box::new(app::screens::gallery::Gallery::new(ctx, focus.as_deref()))
+        }
         "game" => {
             let room = ctx.opts.room.clone().unwrap_or_else(|| "test".into());
             Box::new(app::screens::game::GameScreen::from_room(ctx, &room, seed)?)
@@ -106,6 +113,7 @@ fn main() -> anyhow::Result<()> {
         bot: cli.bot,
         headless: cli.headless,
         allow_small: cli.allow_small || cli.headless,
+        focus: cli.focus.clone(),
     };
 
     let mut backend: Box<dyn Backend> = if cli.headless {

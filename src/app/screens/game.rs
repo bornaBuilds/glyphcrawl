@@ -8,19 +8,23 @@ use crate::game::world::{TickInput, World, HERO_LIGHT_RADIUS, TORCH_RADIUS};
 use crate::platform::{InputState, Key, MouseButton};
 use crate::render::cell::{CellGrid, Rgb};
 use crate::render::iso::{screen_dir_to_world, Camera};
+use crate::render::ascii_shader::FigureStyle;
+use crate::render::figure::ClipPlay;
+use crate::render::scene::{FigureInst, Scene};
 use crate::render::world::{draw_world, flicker, LightSrc, WorldLayer, WorldView};
 
 pub struct GameScreen {
     pub world: World,
     cam: Camera,
     layer: WorldLayer,
+    scene: Scene,
     cam_init: bool,
     reveal: bool,
 }
 
 impl GameScreen {
     pub fn new(world: World) -> GameScreen {
-        GameScreen { world, cam: Camera::default(), layer: WorldLayer::default(), cam_init: false, reveal: false }
+        GameScreen { world, cam: Camera::default(), layer: WorldLayer::default(), scene: Scene::default(), cam_init: false, reveal: false }
     }
 
     /// A one-room level from a template name (dev mode).
@@ -110,9 +114,16 @@ impl Screen for GameScreen {
         };
         draw_world(grid, &mut self.layer, &self.cam, &view, &ctx.assets.world_art());
 
-        // M1 placeholder hero.
-        let g = self.cam.world_to_grid(hero_p + Vec3::new(0.0, 0.6, 0.0));
-        grid.put(g.x as i32, g.y as i32, '@', Rgb(255, 230, 90));
+        let mut figs = Vec::new();
+        if let Some(fig) = ctx.assets.figures.get(&hero.figure) {
+            let mut f = FigureInst::new(fig, hero_p, hero.facing);
+            f.clips.push(ClipPlay { name: if hero.moving { "walk" } else { "idle" }, t: time, w: 1.0 });
+            let (ti, tj) = self.world.map().tile_at(hero.pos);
+            f.style = FigureStyle { xray: Some(Rgb(80, 220, 255)), tile: Some(self.world.map().idx(ti, tj)), ..Default::default() };
+            figs.push(f);
+        }
+        let a = &ctx.assets;
+        self.scene.draw(grid, &self.layer, &self.cam, &figs, &lights, &a.mats, &a.shader);
         ctx.debug_line = format!("hero ({:.1},{:.1})", hero.pos.x, hero.pos.y);
     }
 }

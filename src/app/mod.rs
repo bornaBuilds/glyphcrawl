@@ -28,6 +28,7 @@ pub struct Options {
     pub bot: bool,
     pub headless: bool,
     pub allow_small: bool,
+    pub focus: Option<String>,
 }
 
 pub struct Toast {

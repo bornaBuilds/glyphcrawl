@@ -293,8 +293,30 @@ fn draw_stamp_on_tile(
 ) {
     let map = view.map;
     let tile_idx = map.idx(i, j);
-    let visible = view.visible[tile_idx];
     let tile = map.get(i, j);
+    let opts = StampDraw {
+        visible: view.visible[tile_idx],
+        tile_idx: Some(tile_idx),
+        walkable: tile.is_open() && tile != Tile::Pit,
+        lights: view.lights,
+        ambient: view.ambient,
+        time: view.time,
+    };
+    draw_stamp(grid, layer, cam, art, stamp, i, j, &opts);
+}
+
+pub struct StampDraw<'a> {
+    pub visible: bool,
+    pub tile_idx: Option<usize>,
+    pub walkable: bool,
+    pub lights: &'a [LightSrc<'a>],
+    pub ambient: [f32; 3],
+    pub time: f32,
+}
+
+/// Draw one stamp on tile (i, j), lit, with the height test against `layer`.
+#[allow(clippy::too_many_arguments)]
+pub fn draw_stamp(grid: &mut CellGrid, layer: &mut WorldLayer, cam: &Camera, art: &WorldArt, stamp: &Stamp, i: i32, j: i32, o: &StampDraw) {
     let (tc, tr) = super::iso::tile_top(i, j);
     let gx0 = tc - cam.col - stamp.anchor.0;
     let gy0 = tr - cam.row - stamp.anchor.1;
@@ -302,7 +324,6 @@ fn draw_stamp_on_tile(
         return;
     }
     let base = Vec3::new(i as f32, 0.0, j as f32);
-    let walkable_floor = tile.is_open() && tile != Tile::Pit;
     for r in 0..stamp.h {
         let gy = gy0 + r;
         if gy < 0 || gy >= grid.h as i32 {
@@ -320,17 +341,14 @@ fn draw_stamp_on_tile(
                 continue;
             }
             let mat = art.mats.get(sc.mat);
-            let (ch, fg) = if visible {
+            let (ch, fg) = if o.visible {
                 let world = base + sc.pos;
+                let lit = shade(world, sc.face.normal(), o.tile_idx, o.lights, o.ambient);
                 if mat.emissive > 0.0 {
-                    let flick = 0.85 + 0.15 * flicker(view.time, i, j);
-                    let lit = shade(world, sc.face.normal(), Some(tile_idx), view.lights, view.ambient);
-                    let c = tone_rgb(mat.color, lit).lerp(mat.color.scale(flick), mat.emissive);
-                    (sc.ch, c)
+                    let flick = 0.85 + 0.15 * flicker(o.time, i, j);
+                    (sc.ch, tone_rgb(mat.color, lit).lerp(mat.color.scale(flick), mat.emissive))
                 } else {
-                    let lit = shade(world, sc.face.normal(), Some(tile_idx), view.lights, view.ambient);
-                    let steps = dim_steps(lit);
-                    (art.dim.dim(sc.ch, steps), tone_rgb(mat.color, lit))
+                    (art.dim.dim(sc.ch, dim_steps(lit)), tone_rgb(mat.color, lit))
                 }
             } else {
                 // Remembered but not currently seen: cold, dim, one glyph step sparser.
@@ -341,7 +359,7 @@ fn draw_stamp_on_tile(
             grid.cells[idx] = Cell { ch, fg, bg: Rgb::BLACK };
             layer.height[idx] = h;
             layer.face[idx] = sc.face;
-            layer.floor[idx] = walkable_floor && h < 0.01 && visible;
+            layer.floor[idx] = o.walkable && h < 0.01 && o.visible;
         }
     }
 }

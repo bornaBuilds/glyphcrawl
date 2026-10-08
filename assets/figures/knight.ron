@@ -1,0 +1,57 @@
+// The Knight. +x = forward, +y = up, +z = the figure's right.
+// Rotations (degrees): z swings forward/back, x tilts sideways, y turns.
+(
+    parts: [
+        (name: "root",   shape: Box, size: (0.01, 0.01, 0.01), mat: "steel", hidden: true),
+        (name: "leg_l",  parent: "root", shape: Cylinder, size: (0.17, 0.56, 0.17), at: (0.0, 0.78, -0.12), center: (0.0, -0.28, 0.0), mat: "steel_dark"),
+        (name: "leg_r",  parent: "root", shape: Cylinder, size: (0.17, 0.56, 0.17), at: (0.0, 0.78, 0.12), center: (0.0, -0.28, 0.0), mat: "steel_dark"),
+        (name: "torso",  parent: "root", shape: Box, size: (0.34, 0.58, 0.5), at: (0.0, 1.1, 0.0), mat: "steel"),
+        (name: "tabard", parent: "torso", shape: Box, size: (0.36, 0.42, 0.3), at: (0.02, -0.12, 0.0), mat: "cloth_blue"),
+        (name: "belt",   parent: "torso", shape: Box, size: (0.37, 0.09, 0.52), at: (0.0, -0.3, 0.0), mat: "leather"),
+        (name: "head",   parent: "torso", shape: Sphere, size: (0.36, 0.38, 0.36), at: (0.0, 0.48, 0.0), mat: "steel"),
+        (name: "visor",  parent: "head", shape: Box, size: (0.06, 0.05, 0.26), at: (0.17, 0.0, 0.0), mat: "steel_dark"),
+        (name: "plume",  parent: "head", shape: Cone, size: (0.13, 0.34, 0.13), at: (-0.04, 0.24, 0.0), rot: (0.0, 0.0, 20.0), mat: "cloth_red"),
+        (name: "arm_r",  parent: "torso", shape: Cylinder, size: (0.14, 0.5, 0.14), at: (0.0, 0.2, 0.32), center: (0.0, -0.24, 0.0), mat: "steel"),
+        (name: "sword",  parent: "arm_r", shape: Box, size: (0.95, 0.06, 0.05), at: (0.04, -0.48, 0.0), center: (0.45, 0.0, 0.0), rot: (0.0, 0.0, 35.0), mat: "blade"),
+        (name: "guard",  parent: "sword", shape: Box, size: (0.05, 0.05, 0.24), at: (0.0, 0.0, 0.0), mat: "gold"),
+        (name: "arm_l",  parent: "torso", shape: Cylinder, size: (0.14, 0.5, 0.14), at: (0.0, 0.2, -0.32), center: (0.0, -0.24, 0.0), mat: "steel"),
+        (name: "shield", parent: "arm_l", shape: Box, size: (0.07, 0.58, 0.46), at: (0.12, -0.34, -0.06), mat: "wood"),
+        (name: "boss",   parent: "shield", shape: Sphere, size: (0.1, 0.16, 0.16), at: (0.05, 0.0, 0.0), mat: "steel"),
+    ],
+    clips: {
+        "idle": (dur: 2.0, looped: true, tracks: [
+            Osc(part: "torso", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.015, freq: 0.5),
+            Osc(part: "arm_r", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 4.0, freq: 0.5),
+        ]),
+        "walk": (dur: 0.6, looped: true, tracks: [
+            Osc(part: "leg_l", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 32.0, freq: 1.6667),
+            Osc(part: "leg_r", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 32.0, freq: 1.6667, phase: 0.5),
+            Osc(part: "arm_l", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 18.0, freq: 1.6667),
+            Osc(part: "arm_r", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 18.0, freq: 1.6667, phase: 0.5),
+            Osc(part: "torso", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.03, freq: 3.3333),
+        ]),
+        "swing": (dur: 0.35, tracks: [
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, -70.0, 50.0)), (0.1, (0.0, -80.0, 95.0)), (0.22, (0.0, 70.0, 95.0)), (0.35, (0.0, 0.0, 0.0))]),
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, -10.0, 0.0)), (0.1, (0.0, -25.0, 0.0)), (0.22, (0.0, 25.0, 0.0)), (0.35, (0.0, 0.0, 0.0))]),
+        ]),
+        "block": (dur: 0.12, tracks: [
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.12, (0.0, -25.0, 80.0))]),
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.12, (0.0, 10.0, -8.0))]),
+        ]),
+        "bash": (dur: 0.35, tracks: [
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 30.0)), (0.12, (0.0, -10.0, 95.0)), (0.35, (0.0, 0.0, 0.0))]),
+            Keys(part: "torso", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.12, (0.15, 0.0, 0.0)), (0.35, (0.0, 0.0, 0.0))]),
+        ]),
+        "charge": (dur: 0.4, tracks: [
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, 0.0, -25.0)), (0.3, (0.0, 0.0, -25.0)), (0.4, (0.0, 0.0, 0.0))]),
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, -20.0, 85.0)), (0.3, (0.0, -20.0, 85.0)), (0.4, (0.0, 0.0, 0.0))]),
+        ]),
+        "hurt": (dur: 0.2, tracks: [
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.05, (0.0, 0.0, 18.0)), (0.2, (0.0, 0.0, 0.0))]),
+        ]),
+        "die": (dur: 0.7, tracks: [
+            Keys(part: "root", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.6, (80.0, 0.0, 0.0))]),
+            Keys(part: "root", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.6, (0.0, 0.15, 0.0))]),
+        ]),
+    },
+)
