@@ -632,7 +632,7 @@ fn draw_hud(grid: &mut CellGrid, ctx: &Ctx, w: &World, boss: Option<(String, f32
 }
 
 fn draw_reward(grid: &mut CellGrid, ctx: &Ctx, choices: &[usize], sel: usize, w: &World) -> Vec<(i32, i32, i32, i32)> {
-    grid.dim(0.35);
+    grid.dim(0.2);
     let (gw, gh) = (grid.w as i32, grid.h as i32);
     let card_w = 34;
     let card_h = 11;
