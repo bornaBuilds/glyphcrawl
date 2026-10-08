@@ -2,3 +2,6 @@
 
 pub mod cell;
 pub mod iso;
+pub mod material;
+pub mod stamp;
+pub mod world;

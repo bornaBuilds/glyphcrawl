@@ -1,0 +1,15 @@
+// Which stamps draw each kind of tile. Lists pick a variant per tile (stable hash).
+(
+    floor: ["floor_a*10", "floor_b*10", "floor_c*10", "floor_d*2", "floor_e*1"],
+    wall: ["wall_a*2", "wall_b*1"],
+    stump: ["stump_a"],
+    wall_torch: "wall_torch",
+    stump_torch: "stump_a",
+    door_open: "door_open",
+    door_closed: "door_closed",
+    door_closed_stump: "door_stump",
+    pit: "pit",
+    pillar: "pillar",
+    brazier: "brazier",
+    chest: "chest",
+)

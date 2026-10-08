@@ -2,6 +2,8 @@
 //! The rest of the game only sees `Backend`, `InputState` and `CellGrid`.
 
 pub mod audio;
+#[cfg(feature = "window")]
+pub mod glyph_atlas;
 pub mod headless;
 pub mod term_writer;
 #[cfg(feature = "terminal")]

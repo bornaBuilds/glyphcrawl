@@ -1,0 +1,18 @@
+// Materials: colour + glyph ramp (darkest -> brightest) used by the ASCII shader.
+// `edge` colours the outline glyphs of 3D figures; `emissive` ignores lighting (0..1).
+{
+    // ---- dungeon
+    "floor_stone": (color: "#7a7066"),
+    "floor_dark":  (color: "#4a443e"),
+    "moss":        (color: "#6f8f45"),
+    "bone":        (color: "#d9d0b4", ramp: " .:-=+*#%@"),
+    "wall_stone":  (color: "#8c867e"),
+    "wall_top":    (color: "#5e5852"),
+    "mortar":      (color: "#57524c"),
+    "wood":        (color: "#8a5a32"),
+    "iron":        (color: "#7c8590"),
+    "gold":        (color: "#e8c050"),
+    "pit":         (color: "#0c0c10"),
+    "fire":        (color: "#ffb04a", emissive: 1.0),
+    "ember":       (color: "#ff6a20", emissive: 0.8),
+}

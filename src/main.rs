@@ -25,6 +25,9 @@ struct Cli {
     /// Headless: print the last frame as text.
     #[arg(long)]
     dump: bool,
+    /// Headless: save the last frame as a PNG screenshot.
+    #[arg(long)]
+    png: Option<PathBuf>,
     /// Dungeon seed.
     #[arg(long)]
     seed: Option<u64>,
@@ -60,18 +63,37 @@ struct Cli {
     allow_small: bool,
 }
 
-fn first_screen(name: &str, _ctx: &mut Ctx) -> anyhow::Result<Box<dyn Screen>> {
+fn first_screen(name: &str, ctx: &mut Ctx) -> anyhow::Result<Box<dyn Screen>> {
+    let seed = ctx.opts.seed.unwrap_or(1);
     let s: Box<dyn Screen> = match name {
         "sandbox" => Box::new(app::screens::sandbox::Sandbox::new()),
+        "game" => {
+            let room = ctx.opts.room.clone().unwrap_or_else(|| "test".into());
+            Box::new(app::screens::game::GameScreen::from_room(ctx, &room, seed)?)
+        }
         other => anyhow::bail!("unknown screen '{other}'"),
     };
     Ok(s)
+}
+
+#[cfg(feature = "window")]
+fn save_png(path: &std::path::Path, grid: &glyphcrawl::render::cell::CellGrid, font: &[u8]) -> anyhow::Result<()> {
+    let mut r = platform::glyph_atlas::GlyphRaster::new(font, 12.0)?;
+    let (w, h, px) = r.render_grid(grid);
+    platform::glyph_atlas::write_png(path, w, h, &px)?;
+    Ok(())
+}
+
+#[cfg(not(feature = "window"))]
+fn save_png(_: &std::path::Path, _: &glyphcrawl::render::cell::CellGrid, _: &[u8]) -> anyhow::Result<()> {
+    anyhow::bail!("--png needs the `window` feature")
 }
 
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
     let assets_dir = assets::find_dir(cli.assets.as_deref())?;
     let assets = Assets::load(&assets_dir)?;
+    let font = assets.font.clone();
     let mut settings = Settings::load();
     if cli.mouse_only {
         settings.input_mode = InputMode::MouseOnly;
@@ -146,6 +168,9 @@ fn main() -> anyhow::Result<()> {
             if let Some(g) = &report.last_frame {
                 print!("{}", g.to_text());
             }
+        }
+        if let (Some(path), Some(g)) = (&cli.png, &report.last_frame) {
+            save_png(path, g, &font)?;
         }
         println!(
             "frames {} | render avg {:.2} ms p99 {:.2} ms | bytes/frame avg {:.0} max {}",

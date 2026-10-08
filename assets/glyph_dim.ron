@@ -1,0 +1,27 @@
+// In the dark, glyphs step along these chains towards sparser ones.
+// The first chain that mentions a glyph decides its next step.
+[
+    "#=-. ",
+    "%#",
+    "@%",
+    "&%",
+    "8%",
+    "$%",
+    "*+:. ",
+    "|:",
+    "!|",
+    "/:",
+    "\\:",
+    "(|",
+    ")|",
+    "[=",
+    "]=",
+    "^-",
+    "~-",
+    "_.",
+    "'.",
+    ",.",
+    "`.",
+    "o:",
+    "O0o",
+]

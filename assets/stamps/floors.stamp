@@ -1,0 +1,101 @@
+# Floor tiles: 16x4 diamonds. Rows are 4/12/12/4 cells wide.
+
+=== floor_a
+proxy: floor
+legend: f=floor_stone m=moss b=bone
+--- glyphs
+      . ,.
+   .   ,   .
+     .    .  ,
+      .  '
+--- colors
+      ffmf
+  fffffmffffff
+  fffffffffffm
+      ffff
+
+=== floor_b
+proxy: floor
+legend: f=floor_stone m=moss b=bone
+--- glyphs
+       .
+  .   _.   .
+    ,    '   .
+       . .
+--- colors
+      ffff
+  ffffffffffff
+  ffmfffffffff
+      ffff
+
+=== floor_c
+proxy: floor
+legend: f=floor_stone m=moss b=bone
+--- glyphs
+      ,  .
+    .   .  ,
+  .   ,     .
+        .
+--- colors
+      mfff
+  fffffffffmff
+  ffffmfffffff
+      ffff
+
+=== floor_d
+proxy: floor
+legend: f=floor_stone m=moss b=bone
+--- glyphs
+       ._
+   .  _/ .   ,
+     /   .  .
+      '  .
+--- colors
+      ffff
+  fffffffffffm
+  ffffffffffff
+      ffff
+
+=== floor_e
+proxy: floor
+legend: f=floor_stone m=moss b=bone
+--- glyphs
+       .
+    .  %o  .
+   ,  ~%=  .
+       . .
+--- colors
+      ffff
+  fffffbbfffff
+  fmffbbbfffff
+      ffff
+
+=== pit
+// A hole: mostly black, with a few specks. Opaque so nothing shows through.
+proxy: floor
+legend: e=floor_dark p=pit
+--- glyphs
+       .
+     .    '
+          .
+      .
+--- colors
+      pppp
+  pppppepppepp
+  pppppppppepp
+      pepp
+
+=== door_open
+proxy: floor
+legend: f=floor_stone w=wood
+--- glyphs
+      =..=
+    .=.=.=.=
+    =.=.=.=.
+      .==.
+--- colors
+      wffw
+  fffwfwfwfwff
+  ffwfwfwfwfff
+      fwwf
+

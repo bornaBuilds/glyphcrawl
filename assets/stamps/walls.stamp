@@ -1,0 +1,179 @@
+# Walls. Full walls are 10 rows tall; stumps (front walls) are 3 rows.
+# Faces: L = faces +z (lower-left), R = faces +x (lower-right). Brick courses follow the iso slope.
+
+=== wall_a
+proxy: 0 0 1 1 10
+legend: s=wall_stone m=mortar t=wall_top
+--- glyphs
+      ====
+  ============
+##============##
+######====|###|#
+'-._##|#####_.-'
+####'-.__.-'##|#
+##|###|#########
+'-._######|#_.-'
+##|#'-.__.-'####
+##########|###|#
+'-._##|#####_.-'
+####'-.__.-'##|#
+  |###|#######
+      ####
+--- colors
+      tttt
+  tttttttttttt
+ssttttttttttttss
+ssssssttttssssss
+mmmmssssssssmmmm
+ssssmmmmmmmmssss
+ssssssssssssssss
+mmmmssssssssmmmm
+ssssmmmmmmmmssss
+ssssssssssssssss
+mmmmssssssssmmmm
+ssssmmmmmmmmssss
+  ssssssssssss
+      ssss
+
+=== wall_b
+proxy: 0 0 1 1 10
+legend: s=wall_stone m=mortar t=wall_top
+--- glyphs
+      ====
+  ============
+##============##
+##%###====|###|#
+'-._#%|####%_.-'
+%###'-.__.-'%#|#
+##|%##|%#%###%##
+'-._##%###|#_.-'
+#%|#'-.__.-'###%
+%###%###%#|#%#|#
+'-._##|%#%##_.-'
+##%#'-.__.-'##|#
+  |##%|####%##
+      ##%#
+--- colors
+      tttt
+  tttttttttttt
+ssttttttttttttss
+ssssssttttssssss
+mmmmssssssssmmmm
+ssssmmmmmmmmssss
+ssssssssssssssss
+mmmmssssssssmmmm
+ssssmmmmmmmmssss
+ssssssssssssssss
+mmmmssssssssmmmm
+ssssmmmmmmmmssss
+  ssssssssssss
+      ssss
+
+=== stump_a
+proxy: 0 0 1 1 3
+legend: s=wall_stone t=wall_top
+--- glyphs
+      ====
+  ============
+##============##
+######====|###|#
+######|#######|#
+  ####|#######
+      |###
+--- colors
+      tttt
+  tttttttttttt
+ssttttttttttttss
+ssssssttttssssss
+ssssssssssssssss
+  ssssssssssss
+      ssss
+
+=== wall_torch
+proxy: 0 0 1 1 10
+legend: s=wall_stone m=mortar t=wall_top f=fire w=wood
+--- glyphs
+      ====
+  ============
+##============##
+######====|###|#
+'-. ^#|#### ^.-'
+###(*-.__.-)*#|#
+##| |#|#### |###
+'-._|#####|#|.-'
+##|#'-.__.-'####
+##########|###|#
+'-._##|#####_.-'
+####'-.__.-'##|#
+  |###|#######
+      ####
+--- colors
+      tttt
+  tttttttttttt
+ssttttttttttttss
+ssssssttttssssss
+mmmsfsssssssfmmm
+ssswfmmmmmmwfsss
+sssswssssssswsss
+mmmmwssssssswmmm
+ssssmmmmmmmmssss
+ssssssssssssssss
+mmmmssssssssmmmm
+ssssmmmmmmmmssss
+  ssssssssssss
+      ssss
+
+=== door_closed
+proxy: 0 0 1 1 10
+legend: i=iron
+--- glyphs
+      ====
+  ============
+| ============|
+| | | ====| | |
+================
+| | | | | | | |
+| | | | | | | |
+================
+| | | | | | | |
+| | | | | | | |
+================
+| | | | | | | |
+  | | | | | |
+      ====
+--- colors
+      iiii
+  iiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+  iiiiiiiiiiii
+      iiii
+
+=== door_stump
+proxy: 0 0 1 1 3
+legend: i=iron
+--- glyphs
+      ====
+  ============
+| ============|
+| | | ====| | |
+================
+  | | | | | |
+      | |
+--- colors
+      iiii
+  iiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+iiiiiiiiiiiiiiii
+  iiiiiiiiiiii
+      iiii
+

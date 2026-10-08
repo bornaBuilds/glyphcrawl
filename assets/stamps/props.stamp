@@ -1,0 +1,90 @@
+# Props placed on top of a floor tile.
+
+=== pillar
+proxy: 0.25 0.25 0.75 0.75 12
+legend: c=wall_stone e=floor_dark
+--- glyphs
+
+      .--.
+    |#'--'%|
+    [==][==]
+    |%##%##|
+    |##%###|
+    |#%###%|
+    |%###%#|
+    |##%%##|
+    |#%####|
+    |%####%|
+    |##%#%#|
+    [==][==]
+    ..####..
+    ..#%##..
+
+--- colors
+
+      cccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    cccccccc
+    eeccccee
+
+
+=== brazier
+proxy: 0.3 0.3 0.7 0.7 8
+legend: f=fire i=iron
+--- glyphs
+
+        ^
+     L (*)R
+      ^*^*
+      *^*^
+     \____/
+      \##/
+       ||
+       ||
+      /__\
+       LR
+
+--- colors
+
+        f
+     i fffi
+      ffff
+      ffff
+     iiiiii
+      iiii
+       ii
+       ii
+      iiii
+       ii
+
+
+=== chest
+proxy: 0.15 0.25 0.85 0.75 3
+legend: g=gold w=wood
+--- glyphs
+
+    ______
+   [========]
+   [########]
+   [========]
+      ######
+
+--- colors
+
+    gggggg
+   gwwggggggg
+   gwwwwwwwwg
+   gwwwwwwwwg
+      wwwwww
+
+
