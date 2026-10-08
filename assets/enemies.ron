@@ -1,0 +1,17 @@
+// Monsters. cost = wave budget; min_depth = first room where they can appear.
+{
+    "skeleton": (name: "Skeleton", figure: "skeleton", hp: 30, armor: 10, speed: 2.6, radius: 0.3,
+        ai: Melee, abilities: ["skel_slash"], cost: 1.0, min_depth: 0, drop_chance: 0.15),
+    "skeleton_archer": (name: "Skeleton Archer", figure: "skeleton_archer", hp: 22, armor: 5, speed: 2.4, radius: 0.3,
+        ai: Ranged(min: 3.5, max: 6.5), abilities: ["skel_arrow"], cost: 1.3, min_depth: 1, drop_chance: 0.2),
+    "slime": (name: "Slime", figure: "slime", hp: 40, speed: 1.0, radius: 0.42,
+        ai: Slime, abilities: ["slime_hop"], cost: 2.0, min_depth: 2, split: ("slime_small", 2),
+        drop_chance: 0.15, knockback_mult: 0.6),
+    "slime_small": (name: "Slimelet", figure: "slime", scale: 0.6, hp: 14, speed: 1.2, radius: 0.26,
+        ai: Slime, abilities: ["slime_small_hop"], no_waves: true, drop_chance: 0.05),
+    "bat": (name: "Bat", figure: "bat", hp: 14, speed: 4.2, radius: 0.25, flying: true,
+        ai: Bat, abilities: ["bat_swoop"], cost: 0.8, min_depth: 1, drop_chance: 0.1),
+    "bone_golem": (name: "Bone Golem", figure: "bone_golem", hp: 650, armor: 25, speed: 1.7, radius: 0.8,
+        ai: Golem, abilities: ["golem_slam", "golem_summon", "golem_rock"], boss: true, no_waves: true,
+        knockback_mult: 0.0),
+}

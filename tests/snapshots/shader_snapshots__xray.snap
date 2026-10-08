@@ -1,0 +1,17 @@
+---
+source: tests/shader_snapshots.rs
+expression: txt
+---
+
+         _.--._
+     _.-'      '-._
+    |              |
+    |              |
+    |              |
+    |              |
+    |              |
+    |              |
+    |              |
+    |              |
+     '-.        .-'
+         '-..-'

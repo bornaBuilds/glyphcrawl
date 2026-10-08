@@ -1,0 +1,8 @@
+// Arcane bolt (flies along +x).
+(
+    parts: [
+        (name: "core", shape: Octahedron, size: (0.34, 0.26, 0.26), mat: "arcane"),
+        (name: "tail", parent: "core", shape: Cone, size: (0.14, 0.4, 0.14), at: (-0.22, 0.0, 0.0), rot: (0.0, 0.0, 90.0), mat: "magic"),
+    ],
+    clips: { "idle": (dur: 0.4, looped: true, tracks: [Osc(part: "core", ch: Rot, axis: (1.0, 0.0, 0.0), amp: 90.0, freq: 2.5)]) },
+)

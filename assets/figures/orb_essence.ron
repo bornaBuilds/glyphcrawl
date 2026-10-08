@@ -1,0 +1,8 @@
+// Resource orb pickup.
+(
+    parts: [(name: "orb", shape: Octahedron, size: (0.3, 0.36, 0.3), at: (0.0, 0.45, 0.0), mat: "essence")],
+    clips: { "idle": (dur: 1.0, looped: true, tracks: [
+        Osc(part: "orb", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.08, freq: 1.0),
+        Keys(part: "orb", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (1.0, (0.0, 360.0, 0.0))]),
+    ]) },
+)

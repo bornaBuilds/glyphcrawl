@@ -1,0 +1,8 @@
+// Fireball.
+(
+    parts: [
+        (name: "core", shape: Sphere, size: (0.42, 0.42, 0.42), mat: "fireball"),
+        (name: "tail", parent: "core", shape: Cone, size: (0.3, 0.45, 0.3), at: (-0.3, 0.0, 0.0), rot: (0.0, 0.0, 90.0), mat: "ember"),
+    ],
+    clips: { "idle": (dur: 0.3, looped: true, tracks: [Osc(part: "core", ch: Scale, axis: (1.0, 1.0, 1.0), amp: 0.15, freq: 3.3)]) },
+)

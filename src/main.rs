@@ -49,7 +49,7 @@ struct Cli {
     /// Ignore key-release support and use mouse-move mode.
     #[arg(long)]
     mouse_only: bool,
-    /// Which screen to open first: menu, game, gallery, sandbox.
+    /// Which screen to open first: menu, classes, game, gallery, sandbox.
     #[arg(long, default_value = "menu")]
     screen: String,
     /// Assets directory.
@@ -67,18 +67,28 @@ struct Cli {
 }
 
 fn first_screen(name: &str, ctx: &mut Ctx) -> anyhow::Result<Box<dyn Screen>> {
-    let seed = ctx.opts.seed.unwrap_or(1);
+    use app::screens::*;
+    let seed = ctx.opts.seed.unwrap_or_else(fresh_seed);
+    // Jumping straight into a run with --class / --room.
+    if name == "menu" && (ctx.opts.class.is_some() || ctx.opts.room.is_some()) {
+        let class = ctx.opts.class.clone().unwrap_or_else(|| "knight".into());
+        let room = ctx.opts.room.clone();
+        return Ok(Box::new(game::GameScreen::new_run(ctx, &class, seed, room.as_deref())?));
+    }
     let s: Box<dyn Screen> = match name {
-        "sandbox" => Box::new(app::screens::sandbox::Sandbox::new()),
+        "menu" => Box::new(main_menu::MainMenu::new()),
+        "classes" => Box::new(class_select::ClassSelect::new(ctx)),
+        "sandbox" => Box::new(sandbox::Sandbox::new()),
         "gallery" => {
             let focus = ctx.opts.focus.clone();
-            Box::new(app::screens::gallery::Gallery::new(ctx, focus.as_deref()))
+            Box::new(gallery::Gallery::new(ctx, focus.as_deref()))
         }
         "game" => {
-            let room = ctx.opts.room.clone().unwrap_or_else(|| "test".into());
-            Box::new(app::screens::game::GameScreen::from_room(ctx, &room, seed)?)
+            let class = ctx.opts.class.clone().unwrap_or_else(|| "knight".into());
+            let room = ctx.opts.room.clone();
+            Box::new(game::GameScreen::new_run(ctx, &class, seed, room.as_deref())?)
         }
-        other => anyhow::bail!("unknown screen '{other}'"),
+        other => anyhow::bail!("unknown screen '{other}' (menu, classes, game, gallery, sandbox)"),
     };
     Ok(s)
 }
@@ -157,6 +167,7 @@ fn main() -> anyhow::Result<()> {
         stats: Default::default(),
         quit: false,
         settings_dirty: false,
+        run_summary: String::new(),
     };
     let first = first_screen(&cli.screen, &mut ctx)?;
     let max_frames = if cli.headless { Some(cli.frames) } else { None };
@@ -184,6 +195,9 @@ fn main() -> anyhow::Result<()> {
             "frames {} | render avg {:.2} ms p99 {:.2} ms | bytes/frame avg {:.0} max {}",
             report.frames, avg, p99, avg_b, max_b
         );
+        if !report.summary.is_empty() {
+            println!("{}", report.summary);
+        }
     }
     Ok(())
 }

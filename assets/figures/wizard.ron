@@ -1,0 +1,46 @@
+// The Wizard: robe, pointy hat, beard, staff with a glowing orb.
+(
+    parts: [
+        (name: "root",  shape: Box, size: (0.01, 0.01, 0.01), mat: "cloth_purple", hidden: true),
+        (name: "robe",  parent: "root", shape: Cone, size: (0.72, 1.0, 0.72), at: (0.0, 0.5, 0.0), mat: "cloth_purple"),
+        (name: "torso", parent: "root", shape: Box, size: (0.3, 0.45, 0.42), at: (0.0, 1.12, 0.0), mat: "cloth_purple"),
+        (name: "sash",  parent: "torso", shape: Box, size: (0.32, 0.07, 0.44), at: (0.0, -0.18, 0.0), mat: "gold"),
+        (name: "head",  parent: "torso", shape: Sphere, size: (0.3, 0.32, 0.3), at: (0.0, 0.4, 0.0), mat: "skin"),
+        (name: "beard", parent: "head", shape: Cone, size: (0.22, 0.34, 0.22), at: (0.1, -0.18, 0.0), rot: (0.0, 0.0, 180.0), mat: "beard"),
+        (name: "brim",  parent: "head", shape: Cylinder, size: (0.56, 0.04, 0.56), at: (0.0, 0.12, 0.0), mat: "cloth_purple"),
+        (name: "hat",   parent: "head", shape: Cone, size: (0.34, 0.6, 0.34), at: (-0.03, 0.42, 0.0), rot: (0.0, 0.0, 14.0), mat: "cloth_purple"),
+        (name: "arm_r", parent: "torso", shape: Cylinder, size: (0.12, 0.45, 0.12), at: (0.0, 0.15, 0.26), center: (0.0, -0.22, 0.0), rot: (0.0, 0.0, 20.0), mat: "cloth_purple"),
+        (name: "staff", parent: "arm_r", shape: Cylinder, size: (0.06, 1.55, 0.06), at: (0.04, -0.44, 0.0), center: (0.0, 0.3, 0.0), rot: (0.0, 0.0, -20.0), mat: "wood"),
+        (name: "orb",   parent: "staff", shape: Sphere, size: (0.2, 0.2, 0.2), at: (0.0, 1.1, 0.0), mat: "magic"),
+        (name: "arm_l", parent: "torso", shape: Cylinder, size: (0.12, 0.45, 0.12), at: (0.0, 0.15, -0.26), center: (0.0, -0.22, 0.0), mat: "cloth_purple"),
+    ],
+    clips: {
+        "idle": (dur: 2.0, looped: true, tracks: [
+            Osc(part: "orb", ch: Scale, axis: (1.0, 1.0, 1.0), amp: 0.15, freq: 1.0),
+            Osc(part: "torso", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.015, freq: 0.5),
+            Osc(part: "hat", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 3.0, freq: 0.5),
+        ]),
+        "walk": (dur: 0.7, looped: true, tracks: [
+            Osc(part: "robe", ch: Rot, axis: (1.0, 0.0, 0.0), amp: 5.0, freq: 1.4286),
+            Osc(part: "arm_l", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 20.0, freq: 1.4286),
+            Osc(part: "torso", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.025, freq: 2.857),
+            Osc(part: "hat", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 8.0, freq: 1.4286),
+        ]),
+        "cast": (dur: 0.3, tracks: [
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.08, (0.0, 0.0, 70.0)), (0.3, (0.0, 0.0, 0.0))]),
+            Keys(part: "orb", ch: Scale, keys: [(0.0, (0.0, 0.0, 0.0)), (0.08, (0.8, 0.8, 0.8)), (0.3, (0.0, 0.0, 0.0))]),
+        ]),
+        "nova": (dur: 0.45, tracks: [
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.12, (-70.0, 0.0, 30.0)), (0.45, (0.0, 0.0, 0.0))]),
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.12, (70.0, 0.0, 30.0)), (0.45, (0.0, 0.0, 0.0))]),
+            Keys(part: "root", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.12, (0.0, 0.15, 0.0)), (0.3, (0.0, 0.0, 0.0))]),
+        ]),
+        "hurt": (dur: 0.2, tracks: [
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.05, (0.0, 0.0, 18.0)), (0.2, (0.0, 0.0, 0.0))]),
+        ]),
+        "die": (dur: 0.8, tracks: [
+            Keys(part: "root", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.7, (0.0, 0.0, 85.0))]),
+            Keys(part: "hat", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.7, (-0.3, 0.2, 0.2))]),
+        ]),
+    },
+)

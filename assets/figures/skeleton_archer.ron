@@ -1,0 +1,50 @@
+// Skeleton archer: like the skeleton, but with a bone bow.
+(
+    parts: [
+        (name: "root",   shape: Box, size: (0.01, 0.01, 0.01), mat: "bone", hidden: true),
+        (name: "leg_l",  parent: "root", shape: Cylinder, size: (0.08, 0.6, 0.08), at: (0.0, 0.78, -0.1), center: (0.0, -0.3, 0.0), mat: "bone"),
+        (name: "leg_r",  parent: "root", shape: Cylinder, size: (0.08, 0.6, 0.08), at: (0.0, 0.78, 0.1), center: (0.0, -0.3, 0.0), mat: "bone"),
+        (name: "pelvis", parent: "root", shape: Box, size: (0.16, 0.1, 0.3), at: (0.0, 0.8, 0.0), mat: "bone_dark"),
+        (name: "spine",  parent: "root", shape: Cylinder, size: (0.06, 0.3, 0.06), at: (0.0, 0.95, 0.0), mat: "bone_dark"),
+        (name: "ribs",   parent: "spine", shape: Box, size: (0.22, 0.34, 0.36), at: (0.0, 0.26, 0.0), mat: "ribcage"),
+        (name: "skull",  parent: "ribs", shape: Sphere, size: (0.3, 0.3, 0.28), at: (0.02, 0.36, 0.0), mat: "bone"),
+        (name: "jaw",    parent: "skull", shape: Box, size: (0.14, 0.06, 0.16), at: (0.08, -0.15, 0.0), mat: "bone_dark"),
+        (name: "eye_l",  parent: "skull", shape: Box, size: (0.04, 0.05, 0.05), at: (0.14, 0.02, -0.06), mat: "eye_glow"),
+        (name: "eye_r",  parent: "skull", shape: Box, size: (0.04, 0.05, 0.05), at: (0.14, 0.02, 0.06), mat: "eye_glow"),
+        (name: "arm_r",  parent: "ribs", shape: Cylinder, size: (0.07, 0.5, 0.07), at: (0.0, 0.14, 0.22), center: (0.0, -0.25, 0.0), mat: "bone"),
+        (name: "arm_l",  parent: "ribs", shape: Cylinder, size: (0.07, 0.5, 0.07), at: (0.0, 0.14, -0.22), center: (0.0, -0.25, 0.0), rot: (0.0, 0.0, 15.0), mat: "bone"),
+        (name: "grip",   parent: "arm_l", shape: Box, size: (0.06, 0.14, 0.06), at: (0.03, -0.48, 0.0), rot: (0.0, 0.0, -15.0), mat: "bone_dark"),
+        (name: "limb_u", parent: "grip", shape: Box, size: (0.04, 0.45, 0.04), at: (0.0, 0.06, 0.0), center: (0.0, 0.22, 0.0), rot: (0.0, 0.0, 20.0), mat: "bone_dark"),
+        (name: "limb_d", parent: "grip", shape: Box, size: (0.04, 0.45, 0.04), at: (0.0, -0.06, 0.0), center: (0.0, -0.22, 0.0), rot: (0.0, 0.0, -20.0), mat: "bone_dark"),
+    ],
+    clips: {
+        "idle": (dur: 1.6, looped: true, tracks: [
+            Osc(part: "skull", ch: Rot, axis: (1.0, 0.0, 0.0), amp: 6.0, freq: 0.6),
+            Osc(part: "jaw", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 10.0, freq: 1.2),
+        ]),
+        "walk": (dur: 0.7, looped: true, tracks: [
+            Osc(part: "leg_l", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 30.0, freq: 1.4286),
+            Osc(part: "leg_r", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 30.0, freq: 1.4286, phase: 0.5),
+            Osc(part: "arm_l", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 25.0, freq: 1.4286, phase: 0.5),
+            Osc(part: "ribs", ch: Rot, axis: (1.0, 0.0, 0.0), amp: 6.0, freq: 1.4286),
+        ]),
+        "aim": (dur: 0.7, tracks: [
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 15.0)), (0.25, (0.0, 0.0, 90.0)), (0.7, (0.0, 0.0, 90.0))]),
+            Keys(part: "grip", ch: Rot, keys: [(0.0, (0.0, 0.0, -15.0)), (0.25, (0.0, 0.0, -90.0)), (0.7, (0.0, 0.0, -90.0))]),
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.25, (0.0, 25.0, 90.0)), (0.7, (0.0, 45.0, 75.0))]),
+        ]),
+        "shoot": (dur: 0.35, tracks: [
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 90.0)), (0.2, (0.0, 0.0, 90.0)), (0.35, (0.0, 0.0, 15.0))]),
+            Keys(part: "grip", ch: Rot, keys: [(0.0, (0.0, 0.0, -90.0)), (0.2, (0.0, 0.0, -90.0)), (0.35, (0.0, 0.0, -15.0))]),
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 45.0, 75.0)), (0.35, (0.0, 0.0, 0.0))]),
+        ]),
+        "hurt": (dur: 0.2, tracks: [
+            Keys(part: "ribs", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.05, (0.0, 0.0, 20.0)), (0.2, (0.0, 0.0, 0.0))]),
+            Keys(part: "skull", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.05, (15.0, 0.0, 15.0)), (0.2, (0.0, 0.0, 0.0))]),
+        ]),
+        "die": (dur: 0.6, tracks: [
+            Keys(part: "root", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.5, (0.0, 0.0, -85.0))]),
+            Keys(part: "skull", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.5, (0.1, 0.1, 0.2))]),
+        ]),
+    },
+)

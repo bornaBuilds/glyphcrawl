@@ -1,0 +1,36 @@
+// The four heroes. abilities = [basic (LMB), special (RMB), skill (Q), mobility (Space)].
+// basic_range: how close the hero walks before using the basic attack on a clicked enemy.
+{
+    "knight": (
+        name: "Knight", figure: "knight", color: "#7aa8ff",
+        desc: "A wall of steel. Slow, armoured, builds FURY by trading blows.",
+        hp: 140, armor: 35, speed: 3.3, crit: 0.05,
+        resource: (kind: Fury, max: 100, start: 20, decay: 5, decay_delay: 4, on_hit: 7, on_hurt: 6),
+        abilities: ["sword_arc", "shield_block", "shield_bash", "charge"],
+        basic_range: 1.35,
+    ),
+    "wizard": (
+        name: "Wizard", figure: "wizard", color: "#c890ff",
+        desc: "Fragile, devastating. Spends regenerating MANA on fire and ice.",
+        hp: 75, armor: 5, speed: 3.6, crit: 0.05,
+        resource: (kind: Mana, max: 100, start: 100, regen: 13),
+        abilities: ["arcane_bolt", "fireball", "frost_nova", "blink"],
+        basic_range: 7.0,
+    ),
+    "rogue": (
+        name: "Rogue", figure: "rogue", color: "#7fd07a",
+        desc: "Fast and lethal from behind. ENERGY refills quickly.",
+        hp: 90, armor: 15, speed: 4.3, crit: 0.15,
+        resource: (kind: Energy, max: 100, start: 100, regen: 22),
+        abilities: ["dagger_flurry", "knife_fan", "smoke_bomb", "shadow_dash"],
+        basic_range: 1.1,
+    ),
+    "archer": (
+        name: "Archer", figure: "archer", color: "#e8c050",
+        desc: "Keeps their distance. Quick shots build FOCUS for heavy ones.",
+        hp: 85, armor: 10, speed: 3.9, crit: 0.1,
+        resource: (kind: Focus, max: 100, start: 40, decay: 3, decay_delay: 5, on_hit: 8),
+        abilities: ["quick_shot", "piercing_shot", "volley", "evasive_roll"],
+        basic_range: 7.5,
+    ),
+}

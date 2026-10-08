@@ -5,6 +5,7 @@ use std::path::{Path, PathBuf};
 
 use std::collections::BTreeMap;
 
+use crate::game::defs::{AbilityDef, ClassDef, Defs, Effect, EnemyDef, UpgradeDef};
 use crate::game::level::RoomTemplate;
 use crate::render::ascii_shader::ShaderParams;
 use crate::render::figure::{Figure, FigureFile};
@@ -22,6 +23,7 @@ pub struct Assets {
     pub rooms: Vec<RoomTemplate>,
     pub figures: BTreeMap<String, Figure>,
     pub shader: ShaderParams,
+    pub defs: Defs,
     pub title: String,
 }
 
@@ -83,7 +85,35 @@ impl Assets {
         let shader: ShaderParams = parse_ron(&read(dir, "shader.ron")?).map_err(|e| anyhow::anyhow!("shader.ron: {e}"))?;
         let title = read(dir, "title.txt").unwrap_or_else(|_| "GLYPHCRAWL".into());
 
-        Ok(Assets { font, mats, stamps, tileset, dim, rooms, figures, shader, title })
+        let defs = Defs {
+            classes: parse_ron::<BTreeMap<String, ClassDef>>(&read(dir, "classes.ron")?).map_err(|e| anyhow::anyhow!("classes.ron: {e}"))?,
+            abilities: parse_ron::<BTreeMap<String, AbilityDef>>(&read(dir, "abilities.ron")?).map_err(|e| anyhow::anyhow!("abilities.ron: {e}"))?,
+            enemies: parse_ron::<BTreeMap<String, EnemyDef>>(&read(dir, "enemies.ron")?).map_err(|e| anyhow::anyhow!("enemies.ron: {e}"))?,
+            upgrades: parse_ron::<Vec<UpgradeDef>>(&read(dir, "upgrades.ron")?).map_err(|e| anyhow::anyhow!("upgrades.ron: {e}"))?,
+        };
+        defs.validate().map_err(|e| anyhow::anyhow!(e))?;
+        // Every figure the game refers to must exist.
+        let mut needed: Vec<(String, String)> = Vec::new();
+        for (id, c) in &defs.classes {
+            needed.push((format!("class '{id}'"), c.figure.clone()));
+        }
+        for (id, e) in &defs.enemies {
+            needed.push((format!("enemy '{id}'"), e.figure.clone()));
+        }
+        for (id, a) in &defs.abilities {
+            for e in &a.effects {
+                if let Effect::Projectile { figure, .. } = e {
+                    needed.push((format!("ability '{id}'"), figure.clone()));
+                }
+            }
+        }
+        for (who, fig) in needed {
+            if !figures.contains_key(&fig) {
+                anyhow::bail!("{who} uses figure '{fig}', but there is no figures/{fig}.ron");
+            }
+        }
+
+        Ok(Assets { font, mats, stamps, tileset, dim, rooms, figures, shader, defs, title })
     }
 
     pub fn world_art(&self) -> WorldArt<'_> {

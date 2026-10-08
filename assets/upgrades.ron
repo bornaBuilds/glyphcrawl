@@ -1,0 +1,59 @@
+// Upgrades offered after each cleared room (pick 1 of 3).
+// Stat / Ability modifiers: value = (value + add) * (1 + mul). Ability slots: 0 LMB, 1 RMB, 2 Q, 3 Space.
+[
+    // ---------------- Anyone
+    (id: "vitality", name: "Vitality", desc: "+25 max health, heal 25.", max: 3,
+        mods: [Stat(stat: MaxHp, add: 25), Heal(25)]),
+    (id: "whetstone", name: "Whetstone", desc: "+15% damage.", max: 3,
+        mods: [Stat(stat: Damage, add: 0.15)]),
+    (id: "swift", name: "Swift Boots", desc: "+12% move speed.", max: 2,
+        mods: [Stat(stat: Speed, mul: 0.12)]),
+    (id: "quick_hands", name: "Quick Hands", desc: "Cooldowns recover 12% faster.", max: 3,
+        mods: [Stat(stat: Cdr, add: 0.12)]),
+    (id: "keen", name: "Keen Eye", desc: "+8% critical hit chance.", max: 3,
+        mods: [Stat(stat: Crit, add: 0.08)]),
+    (id: "iron_skin", name: "Iron Skin", desc: "+15 armour.", max: 3,
+        mods: [Stat(stat: Armor, add: 15)]),
+    (id: "deep_reserves", name: "Deep Reserves", desc: "+25 maximum resource.", max: 2,
+        mods: [Stat(stat: ResourceMax, add: 25)]),
+
+    // ---------------- Knight
+    (id: "wide_arc", class: "knight", name: "Wide Arc", desc: "Sword Arc hits 2 more enemies, wider and further.",
+        mods: [Ability(slot: 0, field: MaxTargets, add: 2), Ability(slot: 0, field: Range, add: 0.3), Ability(slot: 0, field: Arc, add: 40)]),
+    (id: "stunning_charge", class: "knight", name: "Stunning Charge", desc: "Charge stuns everything it hits.",
+        mods: [AddOnHit(slot: 3, status: (kind: Stun, dur: 1.2))]),
+    (id: "bulwark", class: "knight", name: "Bulwark", desc: "Block stops all frontal damage and covers more.",
+        mods: [Ability(slot: 1, field: Damage, add: 0.2), Ability(slot: 1, field: Arc, add: 40)]),
+    (id: "heavy_bash", class: "knight", name: "Heavy Bash", desc: "Shield Bash deals double damage and stuns longer.", max: 2,
+        mods: [Ability(slot: 2, field: Damage, mul: 1.0), Ability(slot: 2, field: StatusDur, add: 0.8)]),
+
+    // ---------------- Wizard
+    (id: "burning_ground", class: "wizard", name: "Burning Ground", desc: "Fireball leaves fire behind.",
+        mods: [Ability(slot: 1, field: Linger, add: 3.0)]),
+    (id: "split_bolt", class: "wizard", name: "Split Bolt", desc: "Arcane Bolt fires 2 extra bolts.",
+        mods: [Ability(slot: 0, field: Count, add: 2), Ability(slot: 0, field: Spread, add: 20)]),
+    (id: "deep_freeze", class: "wizard", name: "Deep Freeze", desc: "Frost Nova is 50% bigger and freezes longer.",
+        mods: [Ability(slot: 2, field: Radius, mul: 0.5), Ability(slot: 2, field: StatusDur, add: 1.0)]),
+    (id: "far_blink", class: "wizard", name: "Far Blink", desc: "Blink reaches further, recharges faster.",
+        mods: [Ability(slot: 3, field: Range, add: 3.0), Ability(slot: 3, field: Cooldown, mul: -0.3)]),
+
+    // ---------------- Rogue
+    (id: "poison_blades", class: "rogue", name: "Poison Blades", desc: "Dagger hits poison enemies.",
+        mods: [AddOnHit(slot: 0, status: (kind: Poison, dur: 3.0, mag: 6.0))]),
+    (id: "fan_of_knives", class: "rogue", name: "Fan of Knives", desc: "Knife Fan throws 3 more knives.",
+        mods: [Ability(slot: 1, field: Count, add: 3), Ability(slot: 1, field: Spread, add: 30)]),
+    (id: "shadowstep", class: "rogue", name: "Shadowstep", desc: "Shadow Dash recharges 40% faster and cuts deeper.",
+        mods: [Ability(slot: 3, field: Cooldown, mul: -0.4), Ability(slot: 3, field: Damage, add: 10)]),
+    (id: "assassin", class: "rogue", name: "Assassin", desc: "+30% dagger damage.", max: 2,
+        mods: [Ability(slot: 0, field: Damage, mul: 0.3)]),
+
+    // ---------------- Archer
+    (id: "multishot", class: "archer", name: "Multishot", desc: "Quick Shot fires 2 extra arrows.",
+        mods: [Ability(slot: 0, field: Count, add: 2), Ability(slot: 0, field: Spread, add: 16)]),
+    (id: "rain", class: "archer", name: "Arrow Rain", desc: "Volley covers 40% more ground and lasts longer.",
+        mods: [Ability(slot: 2, field: Radius, mul: 0.4), Ability(slot: 2, field: Pulses, add: 2)]),
+    (id: "eagle_eye", class: "archer", name: "Eagle Eye", desc: "Piercing Shot deals double damage.",
+        mods: [Ability(slot: 1, field: Damage, mul: 1.0)]),
+    (id: "tumble", class: "archer", name: "Tumble", desc: "Evasive Roll recharges 35% faster.",
+        mods: [Ability(slot: 3, field: Cooldown, mul: -0.35)]),
+]

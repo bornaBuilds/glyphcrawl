@@ -1,0 +1,47 @@
+// The Rogue: hood, mask, cape, a dagger in each hand.
+(
+    parts: [
+        (name: "root",  shape: Box, size: (0.01, 0.01, 0.01), mat: "leather", hidden: true),
+        (name: "leg_l", parent: "root", shape: Cylinder, size: (0.14, 0.55, 0.14), at: (0.0, 0.74, -0.1), center: (0.0, -0.27, 0.0), mat: "cloth_dark"),
+        (name: "leg_r", parent: "root", shape: Cylinder, size: (0.14, 0.55, 0.14), at: (0.0, 0.74, 0.1), center: (0.0, -0.27, 0.0), mat: "cloth_dark"),
+        (name: "torso", parent: "root", shape: Box, size: (0.28, 0.5, 0.4), at: (0.0, 1.03, 0.0), mat: "leather"),
+        (name: "cape",  parent: "torso", shape: Box, size: (0.05, 0.75, 0.46), at: (-0.17, -0.12, 0.0), rot: (0.0, 0.0, -8.0), mat: "cloth_green"),
+        (name: "head",  parent: "torso", shape: Sphere, size: (0.28, 0.3, 0.28), at: (0.0, 0.41, 0.0), mat: "skin"),
+        (name: "hood",  parent: "head", shape: Sphere, size: (0.36, 0.36, 0.36), at: (-0.05, 0.04, 0.0), mat: "cloth_green"),
+        (name: "mask",  parent: "head", shape: Box, size: (0.05, 0.09, 0.22), at: (0.13, -0.05, 0.0), mat: "cloth_dark"),
+        (name: "arm_r", parent: "torso", shape: Cylinder, size: (0.11, 0.45, 0.11), at: (0.0, 0.15, 0.25), center: (0.0, -0.22, 0.0), rot: (0.0, 0.0, 25.0), mat: "leather"),
+        (name: "dagger_r", parent: "arm_r", shape: Box, size: (0.42, 0.04, 0.04), at: (0.02, -0.44, 0.0), center: (0.18, 0.0, 0.0), rot: (0.0, 0.0, 10.0), mat: "blade"),
+        (name: "arm_l", parent: "torso", shape: Cylinder, size: (0.11, 0.45, 0.11), at: (0.0, 0.15, -0.25), center: (0.0, -0.22, 0.0), rot: (0.0, 0.0, 25.0), mat: "leather"),
+        (name: "dagger_l", parent: "arm_l", shape: Box, size: (0.42, 0.04, 0.04), at: (0.02, -0.44, 0.0), center: (0.18, 0.0, 0.0), rot: (0.0, 0.0, 10.0), mat: "blade"),
+    ],
+    clips: {
+        "idle": (dur: 1.4, looped: true, tracks: [
+            Osc(part: "torso", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.02, freq: 0.7),
+            Osc(part: "cape", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 4.0, freq: 0.7),
+        ]),
+        "walk": (dur: 0.5, looped: true, tracks: [
+            Osc(part: "leg_l", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 38.0, freq: 2.0),
+            Osc(part: "leg_r", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 38.0, freq: 2.0, phase: 0.5),
+            Osc(part: "torso", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.03, freq: 4.0),
+            Osc(part: "cape", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 12.0, freq: 2.0),
+        ]),
+        "stab": (dur: 0.22, tracks: [
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 0.0, 25.0)), (0.06, (0.0, 10.0, 95.0)), (0.22, (0.0, 0.0, 0.0))]),
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.1, (0.0, -10.0, 60.0)), (0.22, (0.0, 0.0, 0.0))]),
+            Keys(part: "torso", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.06, (0.08, 0.0, 0.0)), (0.22, (0.0, 0.0, 0.0))]),
+        ]),
+        "throw": (dur: 0.3, tracks: [
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 0.0, -40.0)), (0.1, (0.0, 0.0, 130.0)), (0.3, (0.0, 0.0, 0.0))]),
+        ]),
+        "dash": (dur: 0.3, tracks: [
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, 0.0, -30.0)), (0.22, (0.0, 0.0, -30.0)), (0.3, (0.0, 0.0, 0.0))]),
+            Keys(part: "cape", ch: Rot, keys: [(0.0, (0.0, 0.0, -40.0)), (0.3, (0.0, 0.0, 0.0))]),
+        ]),
+        "hurt": (dur: 0.2, tracks: [
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.05, (0.0, 0.0, 18.0)), (0.2, (0.0, 0.0, 0.0))]),
+        ]),
+        "die": (dur: 0.7, tracks: [
+            Keys(part: "root", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.6, (-85.0, 0.0, 0.0))]),
+        ]),
+    },
+)

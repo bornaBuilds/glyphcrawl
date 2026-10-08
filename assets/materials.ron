@@ -43,4 +43,9 @@
     "poison":      (color: "#9ce04a", edge: "#d8ff9a", emissive: 0.5, ramp: " .:*o"),
     "health":      (color: "#ff4060", edge: "#ffa0b0", emissive: 0.7, ramp: " .:oO@"),
     "essence":     (color: "#50b0ff", edge: "#b0e0ff", emissive: 0.7, ramp: " .:oO@"),
+    "beard":       (color: "#d8d8d0", edge: "#ffffff", ramp: " .:;=+*%"),
+    "bowstring":   (color: "#e8e0c0", edge: "#fffbe8", ramp: " .:|"),
+    "focus":       (color: "#ffd060", edge: "#fff0b0", emissive: 0.8, ramp: " .:*o@"),
+    "slime_eye":   (color: "#102010", edge: "#304030", ramp: " .o@"),
+    "feather":     (color: "#e04a3a", edge: "#ff9080", ramp: " .,:;"),
 }

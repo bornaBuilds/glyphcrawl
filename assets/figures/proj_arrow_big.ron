@@ -1,0 +1,9 @@
+// Piercing shot: a glowing arrow.
+(
+    parts: [
+        (name: "shaft", shape: Box, size: (0.95, 0.05, 0.05), mat: "focus"),
+        (name: "head", parent: "shaft", shape: Cone, size: (0.16, 0.26, 0.16), at: (0.55, 0.0, 0.0), rot: (0.0, 0.0, -90.0), mat: "focus"),
+        (name: "glow", parent: "shaft", shape: Octahedron, size: (0.3, 0.2, 0.2), at: (0.45, 0.0, 0.0), mat: "focus"),
+    ],
+    clips: { "idle": (dur: 0.3, looped: true, tracks: [Osc(part: "glow", ch: Scale, axis: (1.0, 1.0, 1.0), amp: 0.3, freq: 3.3)]) },
+)

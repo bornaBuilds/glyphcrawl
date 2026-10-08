@@ -352,9 +352,10 @@ pub fn draw_stamp(grid: &mut CellGrid, layer: &mut WorldLayer, cam: &Camera, art
                 }
             } else {
                 // Remembered but not currently seen: cold, dim, one glyph step sparser.
+                // Floors fade out entirely; walls keep a faint outline, like a map.
                 let g = mat.color.luma();
-                let c = Rgb((g * 70.0) as u8 + 12, (g * 78.0) as u8 + 14, (g * 105.0) as u8 + 24);
-                (art.dim.dim(sc.ch, 1), c)
+                let c = Rgb((g * 55.0) as u8 + 10, (g * 62.0) as u8 + 12, (g * 85.0) as u8 + 22);
+                (art.dim.dim(sc.ch, 2), c)
             };
             grid.cells[idx] = Cell { ch, fg, bg: Rgb::BLACK };
             layer.height[idx] = h;

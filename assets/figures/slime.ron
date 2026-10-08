@@ -1,0 +1,28 @@
+// Slime: a wobbling blob with two little eyes. Squash & stretch comes from the game.
+(
+    parts: [
+        (name: "root", shape: Box, size: (0.01, 0.01, 0.01), mat: "slime", hidden: true),
+        (name: "body", parent: "root", shape: Sphere, size: (0.9, 0.72, 0.9), at: (0.0, 0.36, 0.0), mat: "slime"),
+        (name: "eye_l", parent: "body", shape: Sphere, size: (0.12, 0.16, 0.12), at: (0.33, 0.12, -0.13), mat: "slime_eye"),
+        (name: "eye_r", parent: "body", shape: Sphere, size: (0.12, 0.16, 0.12), at: (0.33, 0.12, 0.13), mat: "slime_eye"),
+    ],
+    clips: {
+        "idle": (dur: 1.2, looped: true, tracks: [
+            Osc(part: "body", ch: Scale, axis: (-0.5, 1.0, -0.5), amp: 0.08, freq: 0.833),
+        ]),
+        "walk": (dur: 0.8, looped: true, tracks: [
+            Osc(part: "body", ch: Scale, axis: (-0.5, 1.0, -0.5), amp: 0.12, freq: 1.25),
+        ]),
+        "crouch": (dur: 0.35, tracks: [
+            Keys(part: "body", ch: Scale, keys: [(0.0, (0.0, 0.0, 0.0)), (0.35, (0.25, -0.35, 0.25))]),
+            Keys(part: "body", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.35, (0.0, -0.12, 0.0))]),
+        ]),
+        "hurt": (dur: 0.2, tracks: [
+            Keys(part: "body", ch: Scale, keys: [(0.0, (0.0, 0.0, 0.0)), (0.05, (0.2, -0.2, 0.2)), (0.2, (0.0, 0.0, 0.0))]),
+        ]),
+        "die": (dur: 0.5, tracks: [
+            Keys(part: "body", ch: Scale, keys: [(0.0, (0.0, 0.0, 0.0)), (0.15, (0.4, -0.5, 0.4)), (0.5, (0.6, -0.95, 0.6))]),
+            Keys(part: "body", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.5, (0.0, -0.33, 0.0))]),
+        ]),
+    },
+)

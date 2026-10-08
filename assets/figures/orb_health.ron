@@ -1,0 +1,5 @@
+// Health orb pickup.
+(
+    parts: [(name: "orb", shape: Sphere, size: (0.3, 0.3, 0.3), at: (0.0, 0.45, 0.0), mat: "health")],
+    clips: { "idle": (dur: 1.0, looped: true, tracks: [Osc(part: "orb", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.08, freq: 1.0)]) },
+)

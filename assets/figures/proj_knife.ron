@@ -1,0 +1,8 @@
+// Thrown knife (spins).
+(
+    parts: [
+        (name: "blade", shape: Box, size: (0.34, 0.04, 0.09), mat: "blade"),
+        (name: "hilt", parent: "blade", shape: Box, size: (0.12, 0.05, 0.05), at: (-0.2, 0.0, 0.0), mat: "leather"),
+    ],
+    clips: { "idle": (dur: 0.2, looped: true, tracks: [Keys(part: "blade", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.2, (0.0, 360.0, 0.0))])]) },
+)

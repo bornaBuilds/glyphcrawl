@@ -163,7 +163,7 @@ impl RoomTemplate {
                     }
                     'c' => {
                         t.chests.push(p);
-                        Tile::Floor
+                        Tile::Chest
                     }
                     'D' => {
                         let dir = if j == 0 {
@@ -221,6 +221,8 @@ pub struct RoomInst {
     pub state: RoomState,
     /// Order along the critical path (0 = start).
     pub depth: u32,
+    /// Countdown used between waves.
+    pub timer: f32,
 }
 
 impl RoomInst {
@@ -275,7 +277,8 @@ impl Level {
             waves: t.waves,
             enemies: t.enemies.clone(),
             state: RoomState::Dormant,
-            depth: 0,
+            depth: 1,
+            timer: 0.0,
         };
         Level {
             map,

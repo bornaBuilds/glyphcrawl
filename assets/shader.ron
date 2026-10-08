@@ -1,9 +1,9 @@
 // ASCII shader tuning. Press F5 in game to reload.
 (
-    edge_depth: 0.35,      // depth jump (world units) that draws an outline
-    edge_normal: 0.2,      // crease threshold (dot of neighbouring normals)
+    edge_depth: 0.6,       // depth jump (world units) that draws an outline
+    edge_normal: -0.2, // crease threshold (dot of neighbouring normals)
     edge_material: false,   // outline where materials meet (helmet vs plume...)
-    edge_min: 2,           // edge samples needed in a cell for an outline glyph
+    edge_min: 3,           // edge samples needed in a cell for an outline glyph
     coverage_min: 3,       // samples (of 8) a figure needs to own a cell
     key_dir: (-0.35, 0.8, 0.5),
     key: 0.55,

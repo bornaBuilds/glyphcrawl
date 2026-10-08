@@ -1,0 +1,36 @@
+// Bat: an octahedron body with flapping wings and red eyes.
+(
+    parts: [
+        (name: "root", shape: Box, size: (0.01, 0.01, 0.01), mat: "bat", hidden: true),
+        (name: "body", parent: "root", shape: Octahedron, size: (0.32, 0.36, 0.32), at: (0.0, 0.0, 0.0), mat: "bat"),
+        (name: "head", parent: "body", shape: Sphere, size: (0.2, 0.2, 0.2), at: (0.14, 0.12, 0.0), mat: "bat"),
+        (name: "ear_l", parent: "head", shape: Cone, size: (0.07, 0.14, 0.07), at: (0.0, 0.12, -0.06), mat: "bat"),
+        (name: "ear_r", parent: "head", shape: Cone, size: (0.07, 0.14, 0.07), at: (0.0, 0.12, 0.06), mat: "bat"),
+        (name: "eye_l", parent: "head", shape: Box, size: (0.04, 0.04, 0.04), at: (0.09, 0.02, -0.05), mat: "eye_glow"),
+        (name: "eye_r", parent: "head", shape: Box, size: (0.04, 0.04, 0.04), at: (0.09, 0.02, 0.05), mat: "eye_glow"),
+        (name: "wing_l", parent: "body", shape: Box, size: (0.36, 0.03, 0.62), at: (0.0, 0.05, -0.1), center: (0.0, 0.0, -0.3), mat: "bat"),
+        (name: "wing_r", parent: "body", shape: Box, size: (0.36, 0.03, 0.62), at: (0.0, 0.05, 0.1), center: (0.0, 0.0, 0.3), mat: "bat"),
+    ],
+    clips: {
+        "idle": (dur: 0.3, looped: true, tracks: [
+            Osc(part: "wing_l", ch: Rot, axis: (1.0, 0.0, 0.0), amp: 55.0, freq: 3.333),
+            Osc(part: "wing_r", ch: Rot, axis: (-1.0, 0.0, 0.0), amp: 55.0, freq: 3.333),
+        ]),
+        "walk": (dur: 0.25, looped: true, tracks: [
+            Osc(part: "wing_l", ch: Rot, axis: (1.0, 0.0, 0.0), amp: 60.0, freq: 4.0),
+            Osc(part: "wing_r", ch: Rot, axis: (-1.0, 0.0, 0.0), amp: 60.0, freq: 4.0),
+        ]),
+        "screech": (dur: 0.25, tracks: [
+            Keys(part: "wing_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.25, (-70.0, 0.0, 0.0))]),
+            Keys(part: "wing_r", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.25, (70.0, 0.0, 0.0))]),
+            Keys(part: "head", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.25, (0.0, 0.0, 25.0))]),
+        ]),
+        "hurt": (dur: 0.2, tracks: [
+            Keys(part: "body", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.05, (40.0, 0.0, 0.0)), (0.2, (0.0, 0.0, 0.0))]),
+        ]),
+        "die": (dur: 0.6, tracks: [
+            Keys(part: "root", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (0.5, (0.0, -0.9, 0.0))]),
+            Keys(part: "root", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.5, (160.0, 0.0, 0.0))]),
+        ]),
+    },
+)

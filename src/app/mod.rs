@@ -54,6 +54,8 @@ pub struct Ctx {
     pub quit: bool,
     /// Set by screens that changed settings affecting the backend.
     pub settings_dirty: bool,
+    /// One-line run summary (printed at the end of headless runs).
+    pub run_summary: String,
 }
 
 impl Ctx {
@@ -115,6 +117,7 @@ pub struct RunReport {
     pub render_ms: Vec<f32>,
     pub bytes: Vec<usize>,
     pub last_frame: Option<CellGrid>,
+    pub summary: String,
 }
 
 fn effective_color(pref: ColorPref, detected: ColorMode) -> ColorMode {
@@ -171,7 +174,7 @@ pub fn run(
     let mut acc = 0.0f32;
     let mut last = Instant::now();
     let mut limiter = Limiter { fps: 60.0, good_for: 0.0 };
-    let mut report = RunReport { frames: 0, render_ms: Vec::new(), bytes: Vec::new(), last_frame: None };
+    let mut report = RunReport { frames: 0, render_ms: Vec::new(), bytes: Vec::new(), last_frame: None, summary: String::new() };
     let headless = ctx.opts.headless;
 
     loop {
@@ -290,5 +293,6 @@ pub fn run(
         }
     }
     report.last_frame.get_or_insert(grid);
+    report.summary = ctx.run_summary.clone();
     Ok(report)
 }

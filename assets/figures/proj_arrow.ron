@@ -1,0 +1,8 @@
+// Arrow.
+(
+    parts: [
+        (name: "shaft", shape: Box, size: (0.7, 0.03, 0.03), mat: "wood"),
+        (name: "head", parent: "shaft", shape: Cone, size: (0.08, 0.16, 0.08), at: (0.4, 0.0, 0.0), rot: (0.0, 0.0, -90.0), mat: "steel"),
+        (name: "fletch", parent: "shaft", shape: Box, size: (0.14, 0.1, 0.02), at: (-0.3, 0.0, 0.0), mat: "feather"),
+    ],
+)

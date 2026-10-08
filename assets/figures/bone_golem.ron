@@ -1,0 +1,64 @@
+// The Bone Golem: a hulking stack of bone blocks with a horned skull and huge fists.
+(
+    parts: [
+        (name: "root",   shape: Box, size: (0.01, 0.01, 0.01), mat: "golem", hidden: true),
+        (name: "leg_l",  parent: "root", shape: Box, size: (0.38, 1.0, 0.38), at: (0.0, 1.0, -0.38), center: (0.0, -0.5, 0.0), mat: "golem_dark"),
+        (name: "leg_r",  parent: "root", shape: Box, size: (0.38, 1.0, 0.38), at: (0.0, 1.0, 0.38), center: (0.0, -0.5, 0.0), mat: "golem_dark"),
+        (name: "pelvis", parent: "root", shape: Box, size: (0.6, 0.3, 1.1), at: (0.0, 1.1, 0.0), mat: "golem"),
+        (name: "torso",  parent: "root", shape: Box, size: (0.95, 0.95, 1.35), at: (0.0, 1.75, 0.0), mat: "ribcage"),
+        (name: "spike1", parent: "torso", shape: Cone, size: (0.2, 0.45, 0.2), at: (-0.45, 0.45, -0.35), rot: (0.0, 0.0, 35.0), mat: "bone_dark"),
+        (name: "spike2", parent: "torso", shape: Cone, size: (0.22, 0.55, 0.22), at: (-0.45, 0.5, 0.0), rot: (0.0, 0.0, 35.0), mat: "bone_dark"),
+        (name: "spike3", parent: "torso", shape: Cone, size: (0.2, 0.45, 0.2), at: (-0.45, 0.45, 0.35), rot: (0.0, 0.0, 35.0), mat: "bone_dark"),
+        (name: "skull",  parent: "torso", shape: Sphere, size: (0.62, 0.58, 0.6), at: (0.22, 0.68, 0.0), mat: "golem"),
+        (name: "jaw",    parent: "skull", shape: Box, size: (0.34, 0.12, 0.42), at: (0.2, -0.28, 0.0), mat: "golem_dark"),
+        (name: "eye_l",  parent: "skull", shape: Box, size: (0.06, 0.1, 0.1), at: (0.28, 0.04, -0.13), mat: "eye_glow"),
+        (name: "eye_r",  parent: "skull", shape: Box, size: (0.06, 0.1, 0.1), at: (0.28, 0.04, 0.13), mat: "eye_glow"),
+        (name: "horn_l", parent: "skull", shape: Cone, size: (0.13, 0.5, 0.13), at: (0.0, 0.25, -0.26), rot: (-30.0, 0.0, -20.0), mat: "bone_dark"),
+        (name: "horn_r", parent: "skull", shape: Cone, size: (0.13, 0.5, 0.13), at: (0.0, 0.25, 0.26), rot: (30.0, 0.0, -20.0), mat: "bone_dark"),
+        (name: "sh_l",   parent: "torso", shape: Sphere, size: (0.48, 0.48, 0.48), at: (0.0, 0.32, -0.78), mat: "golem"),
+        (name: "sh_r",   parent: "torso", shape: Sphere, size: (0.48, 0.48, 0.48), at: (0.0, 0.32, 0.78), mat: "golem"),
+        (name: "arm_l",  parent: "torso", shape: Box, size: (0.3, 1.05, 0.3), at: (0.0, 0.3, -0.82), center: (0.0, -0.5, 0.0), mat: "golem_dark"),
+        (name: "fist_l", parent: "arm_l", shape: Box, size: (0.5, 0.45, 0.5), at: (0.0, -1.1, 0.0), mat: "golem"),
+        (name: "arm_r",  parent: "torso", shape: Box, size: (0.3, 1.05, 0.3), at: (0.0, 0.3, 0.82), center: (0.0, -0.5, 0.0), mat: "golem_dark"),
+        (name: "fist_r", parent: "arm_r", shape: Box, size: (0.5, 0.45, 0.5), at: (0.0, -1.1, 0.0), mat: "golem"),
+    ],
+    clips: {
+        "idle": (dur: 2.4, looped: true, tracks: [
+            Osc(part: "torso", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.04, freq: 0.4167),
+            Osc(part: "jaw", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 8.0, freq: 0.8333),
+            Osc(part: "arm_l", ch: Rot, axis: (1.0, 0.0, 0.0), amp: 4.0, freq: 0.4167),
+            Osc(part: "arm_r", ch: Rot, axis: (-1.0, 0.0, 0.0), amp: 4.0, freq: 0.4167),
+        ]),
+        "walk": (dur: 1.2, looped: true, tracks: [
+            Osc(part: "leg_l", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 22.0, freq: 0.8333),
+            Osc(part: "leg_r", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 22.0, freq: 0.8333, phase: 0.5),
+            Osc(part: "arm_l", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 15.0, freq: 0.8333, phase: 0.5),
+            Osc(part: "arm_r", ch: Rot, axis: (0.0, 0.0, 1.0), amp: 15.0, freq: 0.8333),
+            Osc(part: "torso", ch: Rot, axis: (1.0, 0.0, 0.0), amp: 4.0, freq: 0.8333),
+            Osc(part: "torso", ch: Pos, axis: (0.0, 1.0, 0.0), amp: 0.06, freq: 1.6667),
+        ]),
+        "raise": (dur: 1.0, tracks: [
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.8, (0.0, 0.0, 165.0)), (1.0, (0.0, 0.0, 170.0))]),
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.8, (0.0, 0.0, 165.0)), (1.0, (0.0, 0.0, 170.0))]),
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.8, (0.0, 0.0, 12.0))]),
+            Keys(part: "jaw", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.8, (0.0, 0.0, -25.0))]),
+        ]),
+        "slam": (dur: 0.6, tracks: [
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 170.0)), (0.1, (0.0, 0.0, 55.0)), (0.6, (0.0, 0.0, 0.0))]),
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 0.0, 170.0)), (0.1, (0.0, 0.0, 55.0)), (0.6, (0.0, 0.0, 0.0))]),
+            Keys(part: "torso", ch: Rot, keys: [(0.0, (0.0, 0.0, 12.0)), (0.1, (0.0, 0.0, -20.0)), (0.6, (0.0, 0.0, 0.0))]),
+        ]),
+        "throw": (dur: 0.5, tracks: [
+            Keys(part: "arm_r", ch: Rot, keys: [(0.0, (0.0, 0.0, 170.0)), (0.15, (0.0, 0.0, 40.0)), (0.5, (0.0, 0.0, 0.0))]),
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 170.0)), (0.5, (0.0, 0.0, 0.0))]),
+        ]),
+        "hurt": (dur: 0.25, tracks: [
+            Keys(part: "skull", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (0.06, (10.0, 0.0, 12.0)), (0.25, (0.0, 0.0, 0.0))]),
+        ]),
+        "die": (dur: 1.2, tracks: [
+            Keys(part: "root", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (1.0, (0.0, 0.0, -80.0))]),
+            Keys(part: "skull", ch: Pos, keys: [(0.0, (0.0, 0.0, 0.0)), (1.0, (0.5, 0.3, 0.4))]),
+            Keys(part: "arm_l", ch: Rot, keys: [(0.0, (0.0, 0.0, 0.0)), (1.0, (-60.0, 0.0, 90.0))]),
+        ]),
+    },
+)

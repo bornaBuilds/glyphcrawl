@@ -44,10 +44,10 @@ pub struct ShaderParams {
 impl Default for ShaderParams {
     fn default() -> Self {
         ShaderParams {
-            edge_depth: 0.35,
-            edge_normal: 0.2,
+            edge_depth: 0.6,
+            edge_normal: -0.2,
             edge_material: false,
-            edge_min: 2,
+            edge_min: 3,
             coverage_min: 3,
             key_dir: (-0.35, 0.8, 0.5),
             key: 0.55,
