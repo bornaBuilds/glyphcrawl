@@ -5,6 +5,9 @@ and monsters are **live 3D figures built from primitives** (boxes, spheres, cyli
 octahedra) that are raycast on the CPU and turned into characters by an "ASCII shader".
 It runs in your **terminal** or in its own **window**.
 
+![Class select](docs/classes.png)
+![A fight](docs/fight.png)
+
 Pick one of four heroes — Knight, Wizard, Rogue, Archer — and fight through a generated crypt:
 rooms seal shut, waves of skeletons, archers, slimes and bats pour in, every cleared room offers
 one of three upgrades, and the Bone Golem waits at the end. One life per run.
