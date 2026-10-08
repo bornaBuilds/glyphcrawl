@@ -1,6 +1,6 @@
 // Dev arena for `--room test`.
 kind: test
-waves: 1
+waves: 3
 ---
 #####T######T#####
 #................#

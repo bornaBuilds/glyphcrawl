@@ -277,7 +277,8 @@ impl Level {
             waves: t.waves,
             enemies: t.enemies.clone(),
             state: RoomState::Dormant,
-            depth: 1,
+            // Dev arenas spawn mid-dungeon sized waves.
+            depth: if t.kind == RoomKind::Test { 4 } else { 1 },
             timer: 0.0,
         };
         Level {
