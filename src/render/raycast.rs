@@ -14,6 +14,7 @@ pub const SY: usize = 4;
 /// How far above the ground rays start (along -VIEW_DIR).
 const RAY_START: f32 = 30.0;
 
+#[derive(Default)]
 pub struct SampleBuffer {
     pub w: usize,
     pub h: usize,
@@ -28,11 +29,6 @@ pub struct SampleBuffer {
     pub dirty: Option<(usize, usize, usize, usize)>,
 }
 
-impl Default for SampleBuffer {
-    fn default() -> Self {
-        SampleBuffer { w: 0, h: 0, y: Vec::new(), n: Vec::new(), p: Vec::new(), mat: Vec::new(), owner: Vec::new(), occ: Vec::new(), dirty: None }
-    }
-}
 
 impl SampleBuffer {
     /// Prepare for a grid of `gw`×`gh` cells; clears whatever was written last frame.

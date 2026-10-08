@@ -140,14 +140,13 @@ impl Backend for WindowBackend {
             }
             self.btn_prev[i] = down;
         }
-        if let Some((_, dy)) = self.window.get_scroll_wheel() {
-            if dy.abs() > 0.01 {
+        if let Some((_, dy)) = self.window.get_scroll_wheel()
+            && dy.abs() > 0.01 {
                 // Zoom = font size. Scrolling up makes text bigger (closer camera).
                 let step = if dy > 0.0 { 1.0 } else { -1.0 };
                 self.set_font_px(self.raster.px + step);
                 input.resized = true;
             }
-        }
         let (w, h) = self.window.get_size();
         if (w, h) != (self.win_w, self.win_h) && w > 0 && h > 0 {
             self.win_w = w;

@@ -183,11 +183,10 @@ fn main() -> anyhow::Result<()> {
         let p99 = sorted.get((sorted.len() as f32 * 0.99) as usize).copied().unwrap_or(0.0);
         let avg_b = report.bytes.iter().sum::<usize>() as f32 / n;
         let max_b = report.bytes.iter().max().copied().unwrap_or(0);
-        if cli.dump {
-            if let Some(g) = &report.last_frame {
+        if cli.dump
+            && let Some(g) = &report.last_frame {
                 print!("{}", g.to_text());
             }
-        }
         if let (Some(path), Some(g)) = (&cli.png, &report.last_frame) {
             save_png(path, g, &font)?;
         }

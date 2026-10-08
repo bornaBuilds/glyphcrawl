@@ -221,7 +221,7 @@ mod kira_out {
         let frames: Arc<[Frame]> = samples.into_iter().map(|s| Frame { left: s, right: s }).collect();
         let mut settings = StaticSoundSettings::new();
         if looped {
-            settings = settings.loop_region(..);
+            settings = settings.loop_region(0.0..);
         }
         StaticSoundData { sample_rate: synth::RATE, frames, settings, slice: None }
     }
@@ -242,7 +242,8 @@ mod kira_out {
     impl AudioOut for KiraAudio {
         fn play(&mut self, sfx: Sfx, volume: f32) {
             if let Some(d) = self.sounds.get(&sfx) {
-                let d = d.clone().volume(db(volume * self.master));
+                // Master volume is applied once, on the main track.
+                let d = d.volume(db(volume));
                 let _ = self.manager.play(d);
             }
         }
@@ -253,7 +254,7 @@ mod kira_out {
         }
 
         fn start_ambience(&mut self) {
-            let d = self.ambience.clone().volume(db(0.5));
+            let d = self.ambience.volume(db(0.5));
             let _ = self.manager.play(d);
         }
 

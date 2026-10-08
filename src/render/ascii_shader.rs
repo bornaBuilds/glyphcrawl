@@ -192,7 +192,7 @@ pub fn resolve(grid: &mut CellGrid, buf: &mut SampleBuffer, rc: &ResolveCtx) {
                 }
             }
             let (owner, cover) = counts.iter().copied().max_by_key(|e| e.1).unwrap_or((0, 0));
-            if owner == 0 || cover < p.coverage_min.min(2).max(1) {
+            if owner == 0 || cover < p.coverage_min.clamp(1, 2) {
                 // X-ray outline for hidden heroes/enemies.
                 if hidden_any != 0 && cover == 0 {
                     let style = rc.styles.get(hidden_any as usize - 1).copied().unwrap_or_default();

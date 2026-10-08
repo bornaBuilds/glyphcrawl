@@ -280,12 +280,11 @@ pub fn run(
             report.render_ms.push(render_ms);
             report.bytes.push(stats.bytes);
         }
-        if let Some(max) = max_frames {
-            if report.frames >= max {
+        if let Some(max) = max_frames
+            && report.frames >= max {
                 report.last_frame = Some(grid.clone());
                 break;
             }
-        }
         if !headless {
             limiter.adapt(ctx.settings.frame_cap, stats.write_us as f32 / 1000.0, stats.bytes, frame_dt);
             let deadline = frame_start + Duration::from_secs_f32(1.0 / limiter.fps);

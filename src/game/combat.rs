@@ -54,8 +54,8 @@ pub fn deal(w: &mut World, defs: &Defs, h: Hit) -> f32 {
     let (tpos, tfacing, tarmor, ty) = (t.pos, t.facing, t.stats.armor, t.y);
     let mut dmg = h.dmg;
     let mut crit = false;
-    if let Some(aid) = h.attacker {
-        if let Some(a) = w.actors.get_mut(aid) {
+    if let Some(aid) = h.attacker
+        && let Some(a) = w.actors.get_mut(aid) {
             dmg *= a.stats.dmg_mult;
             if !h.dot {
                 let forced = a.has(StatusKind::NextHitCrit);
@@ -70,7 +70,6 @@ pub fn deal(w: &mut World, defs: &Defs, h: Hit) -> f32 {
                 }
             }
         }
-    }
     if h.backstab > 1.0 && is_behind(tfacing, tpos, h.from) {
         dmg *= h.backstab;
         crit = true;
@@ -81,18 +80,14 @@ pub fn deal(w: &mut World, defs: &Defs, h: Hit) -> f32 {
     let mut blocked = false;
     {
         let t = &w.actors[h.target];
-        if t.has(StatusKind::Blocking) {
-            if let Some(slot) = t.cast.as_ref().map(|c| c.slot) {
-                if let Some(super::defs::Effect::Block { arc, reduction, .. }) =
+        if t.has(StatusKind::Blocking)
+            && let Some(slot) = t.cast.as_ref().map(|c| c.slot)
+                && let Some(super::defs::Effect::Block { arc, reduction, .. }) =
                     t.slots.get(slot).and_then(|s| s.def.effects.iter().find(|e| matches!(e, super::defs::Effect::Block { .. })))
-                {
-                    if in_front(tfacing, tpos, h.from, *arc) {
+                    && in_front(tfacing, tpos, h.from, *arc) {
                         dmg *= 1.0 - reduction.clamp(0.0, 1.0);
                         blocked = true;
                     }
-                }
-            }
-        }
     }
     if target_is_hero && w.god {
         dmg = 0.0;
@@ -121,16 +116,14 @@ pub fn deal(w: &mut World, defs: &Defs, h: Hit) -> f32 {
         }
     }
     let dead_now = t.hp <= 0.0 && !t.dead;
-    if !h.dot {
-        if let Some(aid) = h.attacker {
-            if let Some(a) = w.actors.get_mut(aid) {
+    if !h.dot
+        && let Some(aid) = h.attacker
+            && let Some(a) = w.actors.get_mut(aid) {
                 a.since_combat = 0.0;
                 if let Some(r) = &mut a.resource {
                     r.cur = (r.cur + r.def.on_hit).min(r.max);
                 }
             }
-        }
-    }
     if target_is_hero {
         w.stats.damage_taken += dmg;
     } else {

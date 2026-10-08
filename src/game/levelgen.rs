@@ -7,7 +7,7 @@
 
 use glam::{IVec2, Vec2};
 
-use super::level::{Dir, Level, RoomInst, RoomKind, RoomState, RoomTemplate};
+use super::level::{Level, RoomInst, RoomKind, RoomState, RoomTemplate};
 use super::rng::Rng;
 use super::tile::{Tile, TileMap};
 
@@ -189,7 +189,6 @@ fn try_generate(templates: &[RoomTemplate], rng: &mut Rng, seed: u64) -> Option<
     let st = &templates[placed[0].template];
     let start_local = st.start.unwrap_or(IVec2::new(st.w / 2, st.h / 2));
     let s = start_local + placed[0].origin + shift;
-    let _ = Dir::North;
     Some(Level { map, rooms, start: Vec2::new(s.x as f32 + 0.5, s.y as f32 + 0.5), seed })
 }
 

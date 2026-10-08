@@ -381,7 +381,7 @@ pub fn draw_flames(grid: &mut CellGrid, layer: &WorldLayer, cam: &Camera, c: Vec
             }
             let h = ((x * 7 + y * 13 + step * 5) % 9) as usize;
             let ch = ['^', '~', '*', '\'', '^', '.', '~', '^', ','][h];
-            let col = if h % 3 == 0 { FIRE } else { FIRE2 };
+            let col = if h.is_multiple_of(3) { FIRE } else { FIRE2 };
             grid.cells[i] = Cell { ch, fg: col, bg: Rgb::BLACK };
         }
     }

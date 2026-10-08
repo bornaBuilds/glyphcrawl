@@ -326,8 +326,8 @@ impl World {
         self.tick += 1;
         match self.state.clone() {
             RunState::Reward { choices } => {
-                if let Some(k) = input.pick {
-                    if let Some(&ui) = choices.get(k) {
+                if let Some(k) = input.pick
+                    && let Some(&ui) = choices.get(k) {
                         let u = defs.upgrades[ui].clone();
                         let class = self.hero().class_id().unwrap_or("").to_string();
                         if let Some(c) = defs.classes.get(&class) {
@@ -338,7 +338,6 @@ impl World {
                         self.emit(GameEvent::Message(format!("{} — {}", u.name, u.desc)));
                         self.state = RunState::Playing;
                     }
-                }
                 return;
             }
             RunState::Dead { t } => {

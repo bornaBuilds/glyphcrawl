@@ -19,11 +19,10 @@ pub fn try_cast(w: &mut World, id: ActorId, slot: usize, aim: Vec2, target: Opti
     if s.cd > 0.0 {
         return false;
     }
-    if let Some(r) = &a.resource {
-        if r.cur + 1e-3 < s.def.cost {
+    if let Some(r) = &a.resource
+        && r.cur + 1e-3 < s.def.cost {
             return false;
         }
-    }
     // A cast in progress blocks new ones, except that recovery can be cancelled and mobility
     // skills (slot 3 for heroes) can interrupt anything but another dash.
     if let Some(c) = &a.cast {
@@ -221,11 +220,10 @@ pub fn fire(w: &mut World, defs: &Defs, id: ActorId, def: &super::defs::AbilityD
             }
             Effect::AreaAtAim { max_range, area } => {
                 let mut p = clamp_range(pos, aim, *max_range);
-                if let Some(t) = target.and_then(|t| w.actors.get(t)) {
-                    if faction == Faction::Enemy {
+                if let Some(t) = target.and_then(|t| w.actors.get(t))
+                    && faction == Faction::Enemy {
                         p = clamp_range(pos, t.pos, *max_range);
                     }
-                }
                 spawn_area(w, Some(id), faction, p, area, mult);
             }
             Effect::AreaSelf { area } => spawn_area(w, Some(id), faction, pos, area, mult),
@@ -402,8 +400,8 @@ pub fn update_movement(w: &mut World, defs: &Defs, dt: f32) {
         });
         if !a.disabled() && a.spawning <= 0.0 && !casting_locked {
             v = a.walk;
-            if let Some(c) = &a.cast {
-                if c.phase == super::actor::CastPhase::Holding {
+            if let Some(c) = &a.cast
+                && c.phase == super::actor::CastPhase::Holding {
                     let mm = a.slots[c.slot]
                         .def
                         .effects
@@ -412,7 +410,6 @@ pub fn update_movement(w: &mut World, defs: &Defs, dt: f32) {
                         .unwrap_or(0.5);
                     v *= mm;
                 }
-            }
         }
         a.moving = v.length_squared() > 0.01;
         if a.moving && a.cast.is_none() {

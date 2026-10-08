@@ -382,27 +382,24 @@ impl Defs {
                     return Err(format!("enemy '{id}': unknown ability '{a}'"));
                 }
             }
-            if let Some((s, _)) = &e.split {
-                if !self.enemies.contains_key(s) {
+            if let Some((s, _)) = &e.split
+                && !self.enemies.contains_key(s) {
                     return Err(format!("enemy '{id}': unknown split enemy '{s}'"));
                 }
-            }
         }
         for (id, a) in &self.abilities {
             for e in &a.effects {
-                if let Effect::Summon { enemy, .. } = e {
-                    if !self.enemies.contains_key(enemy) {
+                if let Effect::Summon { enemy, .. } = e
+                    && !self.enemies.contains_key(enemy) {
                         return Err(format!("ability '{id}': unknown summoned enemy '{enemy}'"));
                     }
-                }
             }
         }
         for u in &self.upgrades {
-            if let Some(c) = &u.class {
-                if !self.classes.contains_key(c) {
+            if let Some(c) = &u.class
+                && !self.classes.contains_key(c) {
                     return Err(format!("upgrade '{}': unknown class '{c}'", u.id));
                 }
-            }
         }
         Ok(())
     }

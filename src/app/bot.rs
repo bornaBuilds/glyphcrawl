@@ -1,8 +1,6 @@
 //! A simple autoplayer used by headless runs to find panics and measure performance.
 //! It fights the nearest enemy, uses skills when ready, and walks to the next room.
 
-use glam::Vec2;
-
 use crate::game::actor::Faction;
 use crate::game::defs::Defs;
 use crate::game::level::RoomState;
@@ -15,8 +13,7 @@ pub fn think(w: &World, defs: &Defs) -> TickInput {
         return ti;
     }
     let h = w.hero();
-    let class = h.class_id().and_then(|c| defs.classes.get(c));
-    let reach = class.map(|c| c.basic_range).unwrap_or(1.5);
+    let _ = defs;
     let nearest = w
         .actors
         .iter()
@@ -42,7 +39,6 @@ pub fn think(w: &World, defs: &Defs) -> TickInput {
             ti.aim = h.pos + (h.pos - pos).normalize_or_zero() * 4.0;
             ti.act_pressed[3] = true;
         }
-        let _ = reach;
         return ti;
     }
     // No enemies in sight: head for the first room that isn't cleared yet.
@@ -56,10 +52,9 @@ pub fn think(w: &World, defs: &Defs) -> TickInput {
     // Aim a few tiles towards the goal so the hero's A* handles the details.
     ti.aim = goal;
     ti.lmb_ground = true;
-    if w.tick % 20 == 0 || h.path.is_empty() {
+    if w.tick.is_multiple_of(20) || h.path.is_empty() {
         ti.act_pressed[0] = true;
     }
     ti.act_held[0] = true;
-    let _ = Vec2::ZERO;
     ti
 }

@@ -1,9 +1,7 @@
 //! Projectiles, area effects (telegraphed blasts, novas, burning ground) and pickups.
 
-use glam::Vec2;
 
 use super::ability::spawn_area;
-use super::actor::ActorId;
 use super::combat::{deal, Hit};
 use super::defs::{AreaFx, Defs};
 use super::world::{FxKind, GameEvent, PickupKind, World};
@@ -171,11 +169,9 @@ pub fn update_areas(w: &mut World, defs: &Defs, dt: f32) {
     for e in fx {
         w.emit(e);
     }
-    let hit_ids: Vec<ActorId> = hits.iter().map(|h| h.target).collect();
     for h in hits {
         deal(w, defs, h);
     }
-    let _ = hit_ids;
 }
 
 pub fn update_pickups(w: &mut World, dt: f32) {
@@ -219,5 +215,4 @@ pub fn update_pickups(w: &mut World, dt: f32) {
         }
         w.sfx("Pickup");
     }
-    let _ = Vec2::ZERO;
 }

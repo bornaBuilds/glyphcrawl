@@ -61,11 +61,10 @@ pub struct LightSrc<'a> {
 pub fn shade(p: Vec3, n: Vec3, tile: Option<usize>, lights: &[LightSrc], ambient: [f32; 3]) -> [f32; 3] {
     let mut c = ambient;
     for l in lights {
-        if let (Some(m), Some(t)) = (l.mask, tile) {
-            if !m.get(t).copied().unwrap_or(false) {
+        if let (Some(m), Some(t)) = (l.mask, tile)
+            && !m.get(t).copied().unwrap_or(false) {
                 continue;
             }
-        }
         let d = l.pos - p;
         let dist2 = d.length_squared();
         let r2 = l.radius * l.radius;

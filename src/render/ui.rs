@@ -8,6 +8,7 @@ pub const UI_DIM: Rgb = Rgb(130, 126, 118);
 pub const UI_GOLD: Rgb = Rgb(240, 200, 110);
 pub const UI_BG: Rgb = Rgb(14, 13, 16);
 
+#[allow(clippy::too_many_arguments)]
 /// A box with a single-line frame, filled with `bg`, optional title in the top edge.
 pub fn panel(grid: &mut CellGrid, x: i32, y: i32, w: i32, h: i32, frame: Rgb, bg: Rgb, title: Option<&str>) {
     if w < 2 || h < 2 {

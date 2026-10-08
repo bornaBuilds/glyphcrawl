@@ -176,13 +176,11 @@ impl GameScreen {
 
 impl Screen for GameScreen {
     fn update(&mut self, ctx: &mut Ctx, input: &InputState, dt: f32) -> Transition {
-        if ctx.opts.headless && ctx.opts.bot {
-            if let RunState::Dead { t } | RunState::Victory { t } = self.world.state {
-                if t > 1.0 {
+        if ctx.opts.headless && ctx.opts.bot
+            && let RunState::Dead { t } | RunState::Victory { t } = self.world.state
+                && t > 1.0 {
                     return Transition::Quit;
                 }
-            }
-        }
         match self.world.state {
             RunState::Dead { t } | RunState::Victory { t } if t > 1.2 => {
                 if input.was_pressed(Key::Enter) || input.clicked(MouseButton::Left) {
@@ -350,11 +348,10 @@ impl Screen for GameScreen {
                 }
             }
         }
-        if let Some((p, t)) = self.move_marker {
-            if t > 0.0 {
+        if let Some((p, t)) = self.move_marker
+            && t > 0.0 {
                 draw_decal(grid, &self.layer, &cam, Decal::Circle { c: p, r: 0.35 * (0.4 + t) }, 0.0, Rgb(140, 220, 140), '.');
             }
-        }
         // Shadows under things in the air.
         let mut shadows: Vec<Vec2> = Vec::new();
         for (_, a) in &w.actors {
@@ -398,11 +395,10 @@ impl Screen for GameScreen {
             if !a.dead {
                 f.clips.push(ClipPlay { name: if a.moving { "walk" } else { "idle" }, t: time + a.pos.x * 0.37, w: 1.0 });
             }
-            if let Some((clip, t)) = &a.anim.action {
-                if fig.clips.contains_key(clip) {
+            if let Some((clip, t)) = &a.anim.action
+                && fig.clips.contains_key(clip) {
                     f.clips.push(ClipPlay { name: clip, t: *t, w: 1.0 });
                 }
-            }
             let (ti, tj) = map.tile_at(a.pos);
             let mut style = FigureStyle {
                 flash: (a.anim.flash / 0.12).min(1.0),
@@ -481,13 +477,11 @@ impl Screen for GameScreen {
                     }
                 }
             }
-            if let Some((o, _)) = best {
-                if let Some(Some(id)) = self.fig_owner.get(o as usize - 1) {
-                    if w.actors.get(*id).is_some_and(|a| a.faction == Faction::Enemy && a.targetable()) {
+            if let Some((o, _)) = best
+                && let Some(Some(id)) = self.fig_owner.get(o as usize - 1)
+                    && w.actors.get(*id).is_some_and(|a| a.faction == Faction::Enemy && a.targetable()) {
                         self.hover = Some(*id);
                     }
-                }
-            }
             if self.hover.is_none() {
                 // Generous fallback: an enemy standing near the ground point under the cursor.
                 let g = cam.grid_to_plane(Vec2::new(mx as f32 + 0.5, my as f32 + 0.5), 0.0);

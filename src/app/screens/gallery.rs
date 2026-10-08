@@ -1,7 +1,7 @@
 //! Asset gallery: every figure turns slowly (at game scale and enlarged), every stamp is
 //! shown lit. Edit files under `assets/`, press F5, see the change.
 
-use glam::{Vec2, Vec3};
+use glam::Vec3;
 
 use crate::app::{Ctx, Screen, Transition};
 use crate::platform::{InputState, Key, MouseButton};
@@ -74,17 +74,15 @@ impl Screen for Gallery {
         if input.was_pressed(Key::Space) {
             self.spin = !self.spin;
         }
-        if input.clicked(MouseButton::Left) {
-            if let Some((mx, my)) = input.mouse_cell() {
-                if mx < 26 && my >= 3 {
+        if input.clicked(MouseButton::Left)
+            && let Some((mx, my)) = input.mouse_cell()
+                && mx < 26 && my >= 3 {
                     let i = (my - 3) as usize;
                     if i < list.len() {
                         self.sel = i;
                         self.clip = 0;
                     }
                 }
-            }
-        }
         self.t += dt;
         if self.spin {
             self.angle += dt * 0.7;
@@ -164,7 +162,6 @@ impl Screen for Gallery {
                 self.scene.draw(grid, &empty, &cam2, &[big], &lights2, &a.mats, &a.shader);
                 grid.text(28, 1, &format!("figure: {name}"), Rgb(150, 210, 255));
                 grid.text(28, 2, &format!("animation: {clip_name}  ({} parts)", fig.parts.len()), Rgb(180, 180, 190));
-                let _ = Vec2::ZERO;
             }
             Entry::Stamp(name) => {
                 let Some(st) = ctx.assets.stamps.get(&name) else { return };

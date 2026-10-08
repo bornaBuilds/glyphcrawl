@@ -33,6 +33,7 @@ pub struct Scene {
 }
 
 impl Scene {
+    #[allow(clippy::too_many_arguments)]
     pub fn draw(
         &mut self,
         grid: &mut CellGrid,

@@ -13,8 +13,8 @@ fn assets() -> Assets {
 fn script(tick: u64, hero: Vec2) -> TickInput {
     let a = tick as f32 * 0.01;
     let mut ti = TickInput { move_dir: Vec2::new(a.cos(), a.sin()), aim: hero + Vec2::new(a.sin(), a.cos()) * 3.0, ..Default::default() };
-    if tick % 30 == 0 {
-        ti.act_pressed = [true, false, tick % 90 == 0, false];
+    if tick.is_multiple_of(30) {
+        ti.act_pressed = [true, false, tick.is_multiple_of(90), false];
     }
     ti
 }

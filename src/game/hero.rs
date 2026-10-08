@@ -27,10 +27,8 @@ pub fn control(w: &mut World, defs: &Defs, input: &TickInput, dt: f32) {
     let basic_range = defs.classes.get(&class).map(|c| c.basic_range).unwrap_or(1.5);
 
     // Buffered presses retry for a moment while another cast finishes.
-    if let Some((slot, _aim, target, left)) = w.actors[hid].buffered.clone() {
-        if try_cast(w, hid, slot, input.aim, target) {
-            w.actors[hid].buffered = None;
-        } else if left - dt <= 0.0 {
+    if let Some((slot, _aim, target, left)) = w.actors[hid].buffered {
+        if try_cast(w, hid, slot, input.aim, target) || left - dt <= 0.0 {
             w.actors[hid].buffered = None;
         } else {
             w.actors[hid].buffered = Some((slot, input.aim, target, left - dt));
@@ -106,8 +104,8 @@ pub fn control(w: &mut World, defs: &Defs, input: &TickInput, dt: f32) {
         return;
     }
     // Follow the click-to-move path.
-    if h.attack_target.is_none() {
-        if let Some(&next) = h.path.first() {
+    if h.attack_target.is_none()
+        && let Some(&next) = h.path.first() {
             let d = next - h.pos;
             let arrive = if h.path.len() == 1 { 0.08 } else { 0.35 };
             if d.length() < arrive {
@@ -122,15 +120,12 @@ pub fn control(w: &mut World, defs: &Defs, input: &TickInput, dt: f32) {
                 h.walk = d.normalize() * s;
             }
         }
-    }
     // Releasing the button finishes the current swing only.
-    if !input.act_held[0] {
-        if let Some(c) = &h.cast {
-            if c.phase == CastPhase::Recovery && c.slot == 0 {
+    if !input.act_held[0]
+        && let Some(c) = &h.cast
+            && c.phase == CastPhase::Recovery && c.slot == 0 {
                 h.attack_target = None;
             }
-        }
-    }
 }
 
 fn set_move_target(w: &mut World, goal: Vec2, fresh_click: bool) {

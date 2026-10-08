@@ -132,11 +132,10 @@ pub fn find_dir(explicit: Option<&Path>) -> anyhow::Result<PathBuf> {
         candidates.push(p.to_path_buf());
     }
     candidates.push(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("assets"));
-    if let Ok(exe) = std::env::current_exe() {
-        if let Some(d) = exe.parent() {
+    if let Ok(exe) = std::env::current_exe()
+        && let Some(d) = exe.parent() {
             candidates.push(d.join("assets"));
         }
-    }
     candidates.push(PathBuf::from("assets"));
     candidates
         .into_iter()

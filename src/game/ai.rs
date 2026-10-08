@@ -58,7 +58,7 @@ pub fn think_all(w: &mut World, defs: &Defs, dt: f32) {
             AiKind::Ranged { min, max } => ranged(w, id, hpos, min, max),
             AiKind::Slime => slime(w, id, hpos),
             AiKind::Bat => bat(w, id, hpos, dt),
-            AiKind::Golem => golem(w, defs, id, hpos),
+            AiKind::Golem => golem(w, id, hpos),
         }
     }
 }
@@ -148,15 +148,14 @@ fn bat(w: &mut World, id: ActorId, hpos: Vec2, dt: f32) {
         w.actors[id].ai.mode = AiMode::Orbit;
     }
     let a = &w.actors[id];
-    if a.ai.mode != AiMode::Retreat && a.slots[0].cd <= 0.0 && d < 4.5 {
-        if try_cast(w, id, 0, hpos, Some(w.hero)) {
+    if a.ai.mode != AiMode::Retreat && a.slots[0].cd <= 0.0 && d < 4.5
+        && try_cast(w, id, 0, hpos, Some(w.hero)) {
             let a = &mut w.actors[id];
             a.ai.mode = AiMode::Retreat;
             a.ai.timer = 0.9;
             w.emit(GameEvent::Sfx("Bat".into()));
             return;
         }
-    }
     let a = &mut w.actors[id];
     let rel = a.pos - hpos;
     let ang = rel.y.atan2(rel.x) + a.ai.orbit_dir * dt * 1.6;
@@ -173,20 +172,19 @@ fn bat(w: &mut World, id: ActorId, hpos: Vec2, dt: f32) {
     }
 }
 
-fn golem(w: &mut World, defs: &Defs, id: ActorId, hpos: Vec2) {
+fn golem(w: &mut World, id: ActorId, hpos: Vec2) {
     let a = &w.actors[id];
     let frac = a.hp / a.stats.max_hp;
     let d = a.pos.distance(hpos);
     // Phase 2: call the dead once.
-    if frac < 0.5 && !a.ai.summoned && a.slots.len() > 1 {
-        if try_cast(w, id, 1, hpos, None) {
+    if frac < 0.5 && !a.ai.summoned && a.slots.len() > 1
+        && try_cast(w, id, 1, hpos, None) {
             let a = &mut w.actors[id];
             a.ai.summoned = true;
             w.emit(GameEvent::Message("The Bone Golem calls the dead!".into()));
             w.emit(GameEvent::Shake(0.3));
             return;
         }
-    }
     // Phase 3: enrage.
     if frac < 0.25 && !w.actors[id].ai.enraged {
         let a = &mut w.actors[id];
@@ -206,7 +204,6 @@ fn golem(w: &mut World, defs: &Defs, id: ActorId, hpos: Vec2) {
         try_cast(w, id, 2, hpos, Some(w.hero));
         return;
     }
-    let _ = defs;
     let dir = chase_dir(w, id, hpos);
     let a = &mut w.actors[id];
     a.walk = dir * a.move_speed();
